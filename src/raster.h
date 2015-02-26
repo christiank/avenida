@@ -58,7 +58,6 @@ bool avnraster_gamma(avnraster *, const double gamma);
 bool avnraster_gaussianblur(avnraster *, const double amt);
 bool avnraster_horizontalflip(avnraster *);
 bool avnraster_hue(avnraster *, const double value);
-bool avnraster_info(avnraster *);
 bool avnraster_levels(avnraster *, const double black, const double white,
 	const double gamma);
 bool avnraster_motionblur(avnraster *, const double amt,

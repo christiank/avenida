@@ -600,16 +600,6 @@ avnraster_hue(avnraster *avn, const double value)
  * XXX
  */
 bool
-avnraster_info(avnraster *avn)
-{
-	return true;
-}
-
-
-/*
- * XXX
- */
-bool
 avnraster_levels(avnraster *avn, const double black, const double white,
 	const double gamma)
 {

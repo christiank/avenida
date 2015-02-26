@@ -48,9 +48,6 @@ static int avenida_verticalflip(lua_State *);
 static int avenida_wave(lua_State *);
 static int avenida_write(lua_State *);
 
-static int avenida_info_height(lua_State *);
-static int avenida_info_width(lua_State *);
-
 static int avenida_serialize(lua_State *);
 
 int luaopen_raster(lua_State *L);
@@ -251,13 +248,23 @@ avenida_hue(lua_State *L)
 
 
 /*
- * XXX should probably return a table instead
+ * table = avenida.info(avnraster)
  */
 static int
 avenida_info(lua_State *L)
 {
-	/* XXX */
-	lua_pushstring(L, "XXX IMPLEMENT ME");
+	avnraster *avn;
+
+	avn = AVNRASTER_ARG1;
+	lua_pop(L, 1);
+
+	lua_createtable(L, 0, 4);
+	lua_pushinteger(L, avn->info.width);
+	lua_setfield(L, -2, "width");
+	lua_pushinteger(L, avn->info.height);
+	lua_setfield(L, -2, "height");
+	lua_pushstring(L, avn->info.path);
+	lua_setfield(L, -2, "path");
 	return 1;
 }
 
@@ -627,37 +634,6 @@ avenida_write(lua_State *L)
 
 
 /*
- * int = avenida.height(avnraster)
- */
-static int
-avenida_info_height(lua_State *L)
-{
-	avnraster *avn;
-
-	avn = AVNRASTER_ARG1;
-	lua_pop(L, 1);
-
-	lua_pushinteger(L, avn->info.height);
-	return 1;
-}
-
-
-/*
- * int = avenida.width(avnraster)
- */
-static int
-avenida_info_width(lua_State *L)
-{
-	avnraster *avn;
-
-	avn = AVNRASTER_ARG1;
-	lua_pop(L, 1);
-
-	lua_pushinteger(L, avn->info.width);
-	return 1;
-}
-
-/*
  * str = avenida.serialize(avnraster)
  */
 static int
@@ -710,10 +686,6 @@ luaopen_raster(lua_State *L)
 		{"verticalflip", avenida_verticalflip},
 		{"wave", avenida_wave},
 		{"write", avenida_write},
-
-		{"height", avenida_info_height},
-		{"width", avenida_info_width},
-
 		{"serialize", avenida_serialize},
 		{NULL, NULL},
 	};
