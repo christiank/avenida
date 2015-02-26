@@ -37,8 +37,8 @@ avenida_lineto(lua_State *L)
 	int x, y;
 
 	avn = AVNVECTOR_ARG1;
-	x = luaL_checkinteger(L, 2);
-	y = luaL_checkinteger(L, 3);
+	x = luaL_checknumber(L, 2);
+	y = luaL_checknumber(L, 3);
 	lua_pop(L, 3);
 
 	lua_pushboolean(L, avnvector_lineto(avn, x, y));
@@ -56,8 +56,8 @@ avenida_moveto(lua_State *L)
 	int x, y;
 
 	avn = AVNVECTOR_ARG1;
-	x = luaL_checkinteger(L, 2);
-	y = luaL_checkinteger(L, 3);
+	x = luaL_checknumber(L, 2);
+	y = luaL_checknumber(L, 3);
 	lua_pop(L, 3);
 
 	lua_pushboolean(L, avnvector_moveto(avn, x, y));

@@ -10,8 +10,8 @@
 
 #include "vector.h"
 
-static bool __avnvector_lineto(avnvector *, const int, const int);
-static bool __avnvector_moveto(avnvector *, const int, const int);
+static bool __avnvector_lineto(avnvector *, const double, const double);
+static bool __avnvector_moveto(avnvector *, const double, const double);
 static bool __avnvector_setcap(avnvector *);
 static bool __avnvector_setcolor(avnvector *, const char *);
 static bool __avnvector_setwidth(avnvector *, const unsigned int);
@@ -81,10 +81,10 @@ avnvector_render(avnvector *avn)
 	for (i = 0; i < avn->nops; i++) {
 		switch (avn->ops[i]->name) {
 		case VECTOR_LINETO:
-			__avnvector_lineto(avn, ARG(0)->arg_uint, ARG(1)->arg_uint);
+			__avnvector_lineto(avn, ARG(0)->arg_double, ARG(1)->arg_double);
 			break;
 		case VECTOR_MOVETO:
-			__avnvector_moveto(avn, ARG(0)->arg_uint, ARG(1)->arg_uint);
+			__avnvector_moveto(avn, ARG(0)->arg_double, ARG(1)->arg_double);
 			break;
 		case VECTOR_SETCAP:
 			__avnvector_setcap(avn);
@@ -109,53 +109,53 @@ avnvector_render(avnvector *avn)
 /* */
 
 static bool
-__avnvector_lineto(avnvector *avn, const int x, const int y)
+__avnvector_lineto(avnvector *avn, const double x, const double y)
 {
 	if ((x < 0) || (y < 0) || (x > avn->info.width) || (y > avn->info.height))
 		return false;
 
-	cairo_line_to(avn->vector, (double)x, (double)y);
+	cairo_line_to(avn->vector, x, y);
 	return true;
 }
 
 
 bool
-avnvector_lineto(avnvector *avn, const int x, const int y)
+avnvector_lineto(avnvector *avn, const double x, const double y)
 {
 	struct avnop *op;
 
 	if ((op = avnop_new(VECTOR_LINETO)) == NULL)
 		return false;
 
-	avnop_add_arg(op, AVN_INT, x);
-	avnop_add_arg(op, AVN_INT, y);
+	avnop_add_arg(op, AVN_DOUBLE, x);
+	avnop_add_arg(op, AVN_DOUBLE, y);
 	avnvector_add_op(avn, op);
 	return true;
 }
 
 
 static bool
-__avnvector_moveto(avnvector *avn, const int x, const int y)
+__avnvector_moveto(avnvector *avn, const double x, const double y)
 {
 	if ((x < 0) || (y < 0) || (x > avn->info.width) || (y > avn->info.height))
 		return false;
 
 	cairo_new_path(avn->vector);
-	cairo_move_to(avn->vector, (double)x, (double)y);
+	cairo_move_to(avn->vector, x, y);
 	return true;
 }
 
 
 bool
-avnvector_moveto(avnvector *avn, const int x, const int y)
+avnvector_moveto(avnvector *avn, const double x, const double y)
 {
 	struct avnop *op;
 
 	if ((op = avnop_new(VECTOR_MOVETO)) == NULL)
 		return false;
 
-	avnop_add_arg(op, AVN_INT, x);
-	avnop_add_arg(op, AVN_INT, y);
+	avnop_add_arg(op, AVN_DOUBLE, x);
+	avnop_add_arg(op, AVN_DOUBLE, y);
 	avnvector_add_op(avn, op);
 	return true;
 }

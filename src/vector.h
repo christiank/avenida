@@ -37,9 +37,8 @@ avnvector *avnvector_open(avnvector *, const char *path);
 avnvector *avnvector_write(avnvector *, const char *path);
 void avnvector_render(avnvector *);
 
-/* XXX 'x' and 'y' should be doubles, not ints? */
-bool avnvector_lineto(avnvector *, const int x, const int y);
-bool avnvector_moveto(avnvector *, const int x, const int y);
+bool avnvector_lineto(avnvector *, const double x, const double y);
+bool avnvector_moveto(avnvector *, const double x, const double y);
 bool avnvector_setcap(avnvector *);
 bool avnvector_setcolor(avnvector *, const char *color);
 bool avnvector_setwidth(avnvector *, const unsigned int width);
