@@ -63,8 +63,8 @@ avnraster_new(const char *path)
 		return NULL;
 
 	avn->image = wand;
-	snprintf(avn->path, PATH_MAX, "%s", path);
 	avn->info = (avnrasterinfo){ .width = 0, .height = 0, };
+	snprintf(avn->info.path, PATH_MAX, "%s", path);
 	avn->nops = 0;
 
 	return avn;
@@ -111,7 +111,7 @@ avnraster_add_op(avnraster *avn, const struct avnop *op)
 bool
 avnraster_open(avnraster *avn)
 {
-	if (MagickReadImage(avn->image, avn->path) == MagickPass) {
+	if (MagickReadImage(avn->image, avn->info.path) == MagickPass) {
 		avn->info.width = (size_t)MagickGetImageWidth(avn->image);
 		avn->info.height = (size_t)MagickGetImageHeight(avn->image);
 		snprintf(avn->info.codec, LINE_MAX, "%s",

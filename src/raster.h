@@ -21,6 +21,7 @@ struct avnrasterinfo {
 	size_t width;
 	size_t height;
 	char codec[LINE_MAX];
+	char path[PATH_MAX];
 };
 typedef struct avnrasterinfo avnrasterinfo;
 
@@ -31,7 +32,6 @@ typedef struct avnrasterinfo avnrasterinfo;
 struct avnraster {
 	MagickWand *image;
 	avnrasterinfo info;
-	char path[PATH_MAX]; /* XXX this should be part of the 'info' struct */
 	unsigned int nops;
 	struct avnop *ops[AVENIDA_RASTER_MAX_OPS];
 };
