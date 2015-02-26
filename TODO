@@ -1,0 +1,29 @@
+- "keyword arguments" instead of just positional ones -- should make
+  avnscript far more readable
+
+- the interpreter really shouldn't be lua(1); build avenida(1) which will
+  make certain tables available and global (raster or whatever)
+
+- operations on 2 or more avnrasters -- how to do this?
+
+- there's nothing preventing the user from calling render() twice -- suggest
+  a private flag that gets raised when render is called the first time?
+
+- need to handle in case there are too many operations for a media artifact
+
+- need to handle in case there are too many args to an operation
+
+- figure out what's wrong with raster_radialblur
+
+- lua interface for "info" needs to return a table with everything in it
+
+- need to properly namespace the Lua modules -- one .so per species, and
+  then another for utils?
+
+- support for remote files :) that's the whole point of JSON serialization
+
+- spidermonkey, mruby, cython, ... squirrel (haha)
+
+- need an enumeration for vector line caps
+
+- write a man page
