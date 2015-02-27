@@ -10,6 +10,7 @@
 
 #include "raster.h"
 #include "vector.h"
+#include "video.h"
 
 enum avnspecies {
 	AVENIDA_AUDIO,
@@ -23,6 +24,7 @@ struct avnmedia {
 	union {
 		avnraster *raster;
 		avnvector *vector;
+		avnvideo *video;
 	};
 };
 typedef struct avnmedia avnmedia;
