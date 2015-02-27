@@ -263,6 +263,8 @@ avenida_info(lua_State *L)
 	lua_setfield(L, -2, "width");
 	lua_pushinteger(L, avn->info.height);
 	lua_setfield(L, -2, "height");
+	lua_pushstring(L, avn->info.codec);
+	lua_setfield(L, -2, "codec");
 	lua_pushstring(L, avn->info.path);
 	lua_setfield(L, -2, "path");
 	return 1;
