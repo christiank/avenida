@@ -39,10 +39,10 @@ OBJS= \
 	cJSON.o \
 	commands.o \
 	main.o \
+	media.o \
 	raster.o \
 	script.o \
-	vector.o \
-	media.o
+	vector.o
 
 OUTBIN= avenida
 LUA_RASTER_MODULE= avnscript-raster.so
