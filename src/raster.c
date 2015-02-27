@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <syslog.h>
 
 #include <wand/magick_wand.h>
 
@@ -128,9 +129,6 @@ avnraster_open(avnraster *avn)
 /*
  * XXX This has the opportunity to be multithreaded with range locking
  * and everything!
- *
- * XXX "Verbose" should return a string instead? or it should log somewhere
- * specific? or is it just a Lua thing?
  */
 bool
 avnraster_render(avnraster *avn, const bool verbose)
@@ -138,8 +136,12 @@ avnraster_render(avnraster *avn, const bool verbose)
 	int i;
 
 	for (i = 0; i < avn->nops; i++) {
-		if (verbose)
-			printf("%s\n", cJSON_PrintUnformatted(avnop_to_json(avn->ops[i])));
+		if (verbose) {
+			openlog("avenida", LOG_PERROR, LOG_USER);
+			syslog(LOG_DEBUG, "%s\n",
+				cJSON_PrintUnformatted(avnop_to_json(avn->ops[i])));
+			closelog();
+		}
 
 		switch (avn->ops[i]->name) {
 		case RASTER_BORDER:
