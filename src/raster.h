@@ -13,9 +13,8 @@
 
 #include <wand/magick_wand.h>
 
+#include "avenida.h"
 #include "commands.h"
-
-#define AVENIDA_RASTER_MAX_OPS 1024
 
 struct avnrasterinfo {
 	size_t width;
@@ -33,7 +32,7 @@ struct avnraster {
 	MagickWand *image;
 	avnrasterinfo info;
 	unsigned int nops;
-	struct avnop *ops[AVENIDA_RASTER_MAX_OPS];
+	struct avnop *ops[AVNMEDIA_MAX_OPS];
 };
 typedef struct avnraster avnraster;
 

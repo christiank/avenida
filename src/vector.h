@@ -12,9 +12,8 @@
 
 #include <cairo.h>
 
+#include "avenida.h"
 #include "commands.h"
-
-#define AVENIDA_VECTOR_MAX_OPS 1024
 
 struct avnvectorinfo {
 	size_t width;
@@ -26,7 +25,7 @@ struct avnvector {
 	cairo_t *vector;
 	avnvectorinfo info;
 	unsigned int nops;
-	struct avnop *ops[AVENIDA_VECTOR_MAX_OPS];
+	struct avnop *ops[AVNMEDIA_MAX_OPS];
 };
 typedef struct avnvector avnvector;
 
