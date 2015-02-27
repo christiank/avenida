@@ -65,10 +65,12 @@ avnvector_open(avnvector *avn, const char *path)
 }
 
 
-avnvector *
+bool
 avnvector_write(avnvector *avn, const char *path)
 {
-	return NULL;
+	cairo_status_t ret;
+	ret = cairo_surface_write_to_png(cairo_get_target(avn->vector), path);
+	return ret == CAIRO_STATUS_SUCCESS ? true : false;
 }
 
 #define ARG(n) (avn->ops[i]->args[n])

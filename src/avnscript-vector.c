@@ -22,6 +22,7 @@ static int avenida_setcap(lua_State *);
 static int avenida_setcolor(lua_State *);
 static int avenida_setwidth(lua_State *);
 static int avenida_stroke(lua_State *);
+static int avenida_write(lua_State *);
 
 int luaopen_vector(lua_State *L);
 
@@ -115,6 +116,24 @@ avenida_stroke(lua_State *L)
 	return 0;
 }
 
+
+/*
+ * bool = avenida.write(avnvector, path)
+ */
+static int
+avenida_write(lua_State *L)
+{
+	avnvector *avn;
+	char *path = NULL;
+
+	avn = AVNVECTOR_ARG1;
+	path = (char *)luaL_checkstring(L, 2);
+	lua_pop(L, 2);
+
+	lua_pushboolean(L, avnvector_write(avn, path));
+	return 1;
+}
+
 /* */
 
 int
@@ -128,6 +147,7 @@ luaopen_vector(lua_State *L)
 		{"setcolor", avenida_setcolor},
 		{"setwidth", avenida_setwidth},
 		{"stroke", avenida_stroke},
+		{"write", avenida_write},
 		{NULL, NULL},
 	};
 

@@ -34,7 +34,7 @@ avnvector *avnvector_new(const size_t width, const size_t height);
 void avnvector_free(avnvector *);
 inline void avnvector_add_op(avnvector *, const struct avnop *);
 avnvector *avnvector_open(avnvector *, const char *path);
-avnvector *avnvector_write(avnvector *, const char *path);
+bool avnvector_write(avnvector *, const char *path);
 void avnvector_render(avnvector *);
 
 bool avnvector_lineto(avnvector *, const double x, const double y);
