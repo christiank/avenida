@@ -8,6 +8,7 @@
 #ifndef AVENIDA_MEDIA_H
 #define AVENIDA_MEDIA_H
 
+#include "audio.h"
 #include "raster.h"
 #include "vector.h"
 #include "video.h"
@@ -22,6 +23,7 @@ enum avnspecies {
 struct avnmedia {
 	enum avnspecies species;
 	union {
+		avnaudio *audio;
 		avnraster *raster;
 		avnvector *vector;
 		avnvideo *video;
