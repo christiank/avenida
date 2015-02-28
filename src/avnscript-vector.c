@@ -110,10 +110,19 @@ avenida_setwidth(lua_State *L)
 }
 
 
+/*
+ * bool = avenida.stroke(avnvector)
+ */
 static int
 avenida_stroke(lua_State *L)
 {
-	return 0;
+	avnvector *avn;
+
+	avn = AVNVECTOR_ARG1;
+	lua_pop(L, 1);
+
+	lua_pushboolean(L, avnvector_stroke(avn));
+	return 1;
 }
 
 

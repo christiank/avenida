@@ -208,6 +208,7 @@ avnvector_setwidth(avnvector *avn, const unsigned int width)
 static bool
 __avnvector_stroke(avnvector *avn)
 {
+	cairo_stroke(avn->vector);
 	return true;
 }
 
@@ -215,5 +216,11 @@ __avnvector_stroke(avnvector *avn)
 bool
 avnvector_stroke(avnvector *avn)
 {
+	struct avnop *op;
+
+	if ((op = avnop_new(VECTOR_STROKE)) == NULL)
+		return false;
+
+	avnvector_add_op(avn, op);
 	return true;
 }
