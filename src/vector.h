@@ -38,6 +38,7 @@ void avnvector_render(avnvector *);
 
 bool avnvector_lineto(avnvector *, const double x, const double y);
 bool avnvector_moveto(avnvector *, const double x, const double y);
+bool avnvector_openpath(avnvector *);
 bool avnvector_setcap(avnvector *);
 bool avnvector_setcolor(avnvector *, const char *color);
 bool avnvector_setwidth(avnvector *, const unsigned int width);

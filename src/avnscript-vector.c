@@ -18,6 +18,7 @@
 static int avenida_lineto(lua_State *);
 static int avenida_moveto(lua_State *);
 static int avenida_new(lua_State *);
+static int avenida_openpath(lua_State *);
 static int avenida_setcap(lua_State *);
 static int avenida_setcolor(lua_State *);
 static int avenida_setwidth(lua_State *);
@@ -89,6 +90,22 @@ avenida_new(lua_State *L)
 }
 
 
+/*
+ * bool = avenida.openpath(avnvector)
+ */
+static int
+avenida_openpath(lua_State *L)
+{
+	avnvector *avn;
+
+	avn = AVNVECTOR_ARG1;
+	lua_pop(L, 1);
+
+	lua_pushboolean(L, avnvector_openpath(avn));
+	return 1;
+}
+
+
 static int
 avenida_setcap(lua_State *L)
 {
@@ -152,6 +169,7 @@ luaopen_vector(lua_State *L)
 		{"lineto", avenida_lineto},
 		{"moveto", avenida_moveto},
 		{"new", avenida_new},
+		{"openpath", avenida_openpath},
 		{"setcap", avenida_setcap},
 		{"setcolor", avenida_setcolor},
 		{"setwidth", avenida_setwidth},

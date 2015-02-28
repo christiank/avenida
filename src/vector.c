@@ -12,6 +12,7 @@
 
 static bool __avnvector_lineto(avnvector *, const double, const double);
 static bool __avnvector_moveto(avnvector *, const double, const double);
+static bool __avnvector_openpath(avnvector *);
 static bool __avnvector_setcap(avnvector *);
 static bool __avnvector_setcolor(avnvector *, const char *);
 static bool __avnvector_setwidth(avnvector *, const unsigned int);
@@ -88,6 +89,9 @@ avnvector_render(avnvector *avn)
 		case VECTOR_MOVETO:
 			__avnvector_moveto(avn, ARG(0)->arg_double, ARG(1)->arg_double);
 			break;
+		case VECTOR_OPENPATH:
+			__avnvector_openpath(avn);
+			break;
 		case VECTOR_SETCAP:
 			__avnvector_setcap(avn);
 			break;
@@ -158,6 +162,27 @@ avnvector_moveto(avnvector *avn, const double x, const double y)
 
 	avnop_add_arg(op, AVN_DOUBLE, x);
 	avnop_add_arg(op, AVN_DOUBLE, y);
+	avnvector_add_op(avn, op);
+	return true;
+}
+
+
+static bool
+__avnvector_openpath(avnvector *avn)
+{
+	cairo_new_path(avn->vector);
+	return true;
+}
+
+
+bool
+avnvector_openpath(avnvector *avn)
+{
+	struct avnop *op;
+
+	if ((op = avnop_new(VECTOR_OPENPATH)) == NULL)
+		return false;
+
 	avnvector_add_op(avn, op);
 	return true;
 }
