@@ -10,6 +10,7 @@
 
 #include "vector.h"
 
+static bool __avnvector_closepath(avnvector *);
 static bool __avnvector_lineto(avnvector *, const double, const double);
 static bool __avnvector_moveto(avnvector *, const double, const double);
 static bool __avnvector_openpath(avnvector *);
@@ -83,6 +84,9 @@ avnvector_render(avnvector *avn)
 
 	for (i = 0; i < avn->nops; i++) {
 		switch (avn->ops[i]->name) {
+		case VECTOR_CLOSEPATH:
+			__avnvector_closepath(avn);
+			break;
 		case VECTOR_LINETO:
 			__avnvector_lineto(avn, ARG(0)->arg_double, ARG(1)->arg_double);
 			break;
@@ -113,6 +117,27 @@ avnvector_render(avnvector *avn)
 #undef ARG
 
 /* */
+
+static bool
+__avnvector_closepath(avnvector *avn)
+{
+	cairo_close_path(avn->vector);
+	return true;
+}
+
+
+bool
+avnvector_closepath(avnvector *avn)
+{
+	struct avnop *op;
+
+	if ((op = avnop_new(VECTOR_CLOSEPATH)) == NULL)
+		return false;
+
+	avnvector_add_op(avn, op);
+	return true;
+}
+
 
 static bool
 __avnvector_lineto(avnvector *avn, const double x, const double y)

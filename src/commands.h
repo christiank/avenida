@@ -49,6 +49,7 @@ enum avncmdname {
 	RASTER_WAVE,
 
 	/* Vector commands */
+	VECTOR_CLOSEPATH,
 	VECTOR_LINETO,
 	VECTOR_MOVETO,
 	VECTOR_OPENPATH,

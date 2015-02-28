@@ -36,6 +36,7 @@ avnvector *avnvector_open(avnvector *, const char *path);
 bool avnvector_write(avnvector *, const char *path);
 void avnvector_render(avnvector *);
 
+bool avnvector_closepath(avnvector *);
 bool avnvector_lineto(avnvector *, const double x, const double y);
 bool avnvector_moveto(avnvector *, const double x, const double y);
 bool avnvector_openpath(avnvector *);

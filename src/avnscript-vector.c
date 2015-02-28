@@ -15,6 +15,7 @@
 
 #define AVNVECTOR_ARG1 ((avnvector*)luaL_checkudata(L, 1, "avnvector"))
 
+static int avenida_closepath(lua_State *);
 static int avenida_lineto(lua_State *);
 static int avenida_moveto(lua_State *);
 static int avenida_new(lua_State *);
@@ -28,6 +29,22 @@ static int avenida_write(lua_State *);
 int luaopen_vector(lua_State *L);
 
 /* */
+
+/*
+ * bool = avenida.closepath(avnvector)
+ */
+static int
+avenida_closepath(lua_State *L)
+{
+	avnvector *avn;
+
+	avn = AVNVECTOR_ARG1;
+	lua_pop(L, 1);
+
+	lua_pushboolean(L, avnvector_closepath(avn));
+	return 1;
+}
+
 
 /*
  * bool = avenida.lineto(avnvector, x, y)
@@ -166,6 +183,7 @@ int
 luaopen_vector(lua_State *L)
 {
 	luaL_Reg funcs[] = {
+		{"closepath", avenida_closepath},
 		{"lineto", avenida_lineto},
 		{"moveto", avenida_moveto},
 		{"new", avenida_new},
