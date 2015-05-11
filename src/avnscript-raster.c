@@ -6,14 +6,13 @@
  */
 
 #include <stdbool.h>
-#include <string.h>
 
 #include <lua.h>
 #include <lauxlib.h>
 
 #include "raster.h"
 
-#define AVNRASTER_ARG1 ((avnraster*)luaL_checkudata(L, 1, "avnraster"))
+#define AVNRASTER_ARG1 ((avnraster**)luaL_checkudata(L, 1, "avnraster"))
 
 static int avenida_border(lua_State *);
 static int avenida_brightness(lua_State *);
@@ -60,7 +59,7 @@ int luaopen_raster(lua_State *L);
 static int
 avenida_border(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	char *color;
 	size_t width, height;
 
@@ -70,7 +69,7 @@ avenida_border(lua_State *L)
 	color = (char*)luaL_checkstring(L, 4);
 	lua_pop(L, 4);
 
-	lua_pushboolean(L, avnraster_border(avn, width, height, color));
+	lua_pushboolean(L, avnraster_border(*avn, width, height, color));
 	return 1;
 }
 
@@ -81,14 +80,14 @@ avenida_border(lua_State *L)
 static int
 avenida_brightness(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double value;
 
 	avn = AVNRASTER_ARG1;
 	value = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_brightness(avn, value));
+	lua_pushboolean(L, avnraster_brightness(*avn, value));
 	return 1;
 }
 
@@ -96,14 +95,14 @@ avenida_brightness(lua_State *L)
 static int
 avenida_charcoal(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double amt;
 
 	avn = AVNRASTER_ARG1;
 	amt = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_charcoal(avn, amt));
+	lua_pushboolean(L, avnraster_charcoal(*avn, amt));
 	return 1;
 }
 
@@ -114,7 +113,7 @@ avenida_charcoal(lua_State *L)
 static int
 avenida_crop(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	unsigned int x, y;
 	size_t width, height;
 
@@ -125,7 +124,7 @@ avenida_crop(lua_State *L)
 	height = (size_t)luaL_checkinteger(L, 5);
 	lua_pop(L, 5);
 
-	lua_pushboolean(L, avnraster_crop(avn, x, y, width, height));
+	lua_pushboolean(L, avnraster_crop(*avn, x, y, width, height));
 	return 1;
 }
 
@@ -136,12 +135,12 @@ avenida_crop(lua_State *L)
 static int
 avenida_despeckle(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_despeckle(avn));
+	lua_pushboolean(L, avnraster_despeckle(*avn));
 	return 1;
 }
 
@@ -149,14 +148,14 @@ avenida_despeckle(lua_State *L)
 static int
 avenida_emboss(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double amt;
 
 	avn = AVNRASTER_ARG1;
 	amt = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_emboss(avn, amt));
+	lua_pushboolean(L, avnraster_emboss(*avn, amt));
 	return 1;
 }
 
@@ -167,12 +166,12 @@ avenida_emboss(lua_State *L)
 static int
 avenida_equalize(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_equalize(avn));
+	lua_pushboolean(L, avnraster_equalize(*avn));
 	return 1;
 }
 
@@ -183,14 +182,14 @@ avenida_equalize(lua_State *L)
 static int
 avenida_gamma(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double gamma;
 
 	avn = AVNRASTER_ARG1;
 	gamma = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_gamma(avn, gamma));
+	lua_pushboolean(L, avnraster_gamma(*avn, gamma));
 	return 1;
 }
 
@@ -201,14 +200,14 @@ avenida_gamma(lua_State *L)
 static int
 avenida_gaussianblur(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double amt;
 
 	avn = AVNRASTER_ARG1;
 	amt = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_gaussianblur(avn, amt));
+	lua_pushboolean(L, avnraster_gaussianblur(*avn, amt));
 	return 1;
 }
 
@@ -219,12 +218,12 @@ avenida_gaussianblur(lua_State *L)
 static int
 avenida_horizontalflip(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_horizontalflip(avn));
+	lua_pushboolean(L, avnraster_horizontalflip(*avn));
 	return 1;
 }
 
@@ -235,14 +234,14 @@ avenida_horizontalflip(lua_State *L)
 static int
 avenida_hue(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double value;
 
 	avn = AVNRASTER_ARG1;
 	value = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_hue(avn, value));
+	lua_pushboolean(L, avnraster_hue(*avn, value));
 	return 1;
 }
 
@@ -253,19 +252,19 @@ avenida_hue(lua_State *L)
 static int
 avenida_info(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
 	lua_createtable(L, 0, 4);
-	lua_pushinteger(L, avn->info.width);
+	lua_pushinteger(L, (*avn)->info.width);
 	lua_setfield(L, -2, "width");
-	lua_pushinteger(L, avn->info.height);
+	lua_pushinteger(L, (*avn)->info.height);
 	lua_setfield(L, -2, "height");
-	lua_pushstring(L, avn->info.codec);
+	lua_pushstring(L, (*avn)->info.codec);
 	lua_setfield(L, -2, "codec");
-	lua_pushstring(L, avn->info.path);
+	lua_pushstring(L, (*avn)->info.path);
 	lua_setfield(L, -2, "path");
 	return 1;
 }
@@ -281,7 +280,7 @@ avenida_levels(lua_State *L)
 static int
 avenida_motionblur(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double amt, angle;
 
 	avn = AVNRASTER_ARG1;
@@ -289,7 +288,7 @@ avenida_motionblur(lua_State *L)
 	angle = luaL_checknumber(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_motionblur(avn, amt, angle));
+	lua_pushboolean(L, avnraster_motionblur(*avn, amt, angle));
 	return 1;
 }
 
@@ -300,12 +299,12 @@ avenida_motionblur(lua_State *L)
 static int
 avenida_negate(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_negate(avn));
+	lua_pushboolean(L, avnraster_negate(*avn));
 	return 1;
 }
 
@@ -316,12 +315,12 @@ avenida_negate(lua_State *L)
 static int
 avenida_negategrays(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_negategrays(avn));
+	lua_pushboolean(L, avnraster_negategrays(*avn));
 	return 1;
 }
 
@@ -332,12 +331,12 @@ avenida_negategrays(lua_State *L)
 static int
 avenida_normalize(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_normalize(avn));
+	lua_pushboolean(L, avnraster_normalize(*avn));
 	return 1;
 }
 
@@ -348,14 +347,14 @@ avenida_normalize(lua_State *L)
 static int
 avenida_oilpaint(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double radius;
 
 	avn = AVNRASTER_ARG1;
 	radius = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_oilpaint(avn, radius));
+	lua_pushboolean(L, avnraster_oilpaint(*avn, radius));
 	return 1;
 }
 
@@ -368,21 +367,19 @@ avenida_oilpaint(lua_State *L)
 static int
 avenida_open(lua_State *L)
 {
-	avnraster *avn, *tmp;
+	avnraster **avn;
 	char *path;
 
 	path = (char*)luaL_checkstring(L, 1);
 	lua_pop(L, 1);
 
-	avn = (avnraster*)lua_newuserdata(L, sizeof(avnraster));
-	tmp = avnraster_new(path);
+	avn = (avnraster**)lua_newuserdata(L, sizeof(avnraster *));
+	*avn = avnraster_new(path);
 
-	if (avnraster_open(tmp)) {
-		memmove(avn, tmp, sizeof(avnraster));
+	if (avnraster_open(*avn)) {
 		luaL_setmetatable(L, "avnraster");
 	} else {
-		free(avn);
-		avnraster_free(tmp);
+		avnraster_free(*avn);
 		lua_pushnil(L);
 	}
 
@@ -396,14 +393,14 @@ avenida_open(lua_State *L)
 static int
 avenida_radialblur(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double angle;
 
 	avn = AVNRASTER_ARG1;
 	angle = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_radialblur(avn, angle));
+	lua_pushboolean(L, avnraster_radialblur(*avn, angle));
 	return 1;
 }
 
@@ -414,14 +411,14 @@ avenida_radialblur(lua_State *L)
 static int
 avenida_render(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	bool verbose;
 
 	avn = AVNRASTER_ARG1;
 	verbose = lua_toboolean(L, 2);
 	lua_pop(L, 2);
 
-	avnraster_render(avn, verbose);
+	avnraster_render(*avn, verbose);
 	return 0;
 }
 
@@ -432,7 +429,7 @@ avenida_render(lua_State *L)
 static int
 avenida_resize(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	size_t width, height;
 
 	avn = AVNRASTER_ARG1;
@@ -440,7 +437,7 @@ avenida_resize(lua_State *L)
 	height = (size_t)luaL_checkinteger(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_resize(avn, width, height));
+	lua_pushboolean(L, avnraster_resize(*avn, width, height));
 	return 1;
 }
 
@@ -451,7 +448,7 @@ avenida_resize(lua_State *L)
 static int
 avenida_roll(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	int x_amt, y_amt;
 
 	avn = AVNRASTER_ARG1;
@@ -459,7 +456,7 @@ avenida_roll(lua_State *L)
 	y_amt = luaL_checkinteger(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_roll(avn, x_amt, y_amt));
+	lua_pushboolean(L, avnraster_roll(*avn, x_amt, y_amt));
 	return 1;
 }
 
@@ -470,7 +467,7 @@ avenida_roll(lua_State *L)
 static int
 avenida_rotate(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double angle;
 	char *bgcolor = NULL;
 
@@ -485,7 +482,7 @@ avenida_rotate(lua_State *L)
 		lua_pop(L, 3);
 	}
 
-	lua_pushboolean(L, avnraster_rotate(avn, angle, bgcolor));
+	lua_pushboolean(L, avnraster_rotate(*avn, angle, bgcolor));
 	return 1;
 }
 
@@ -496,14 +493,14 @@ avenida_rotate(lua_State *L)
 static int
 avenida_saturation(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double value;
 
 	avn = AVNRASTER_ARG1;
 	value = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_saturation(avn, value));
+	lua_pushboolean(L, avnraster_saturation(*avn, value));
 	return 1;
 }
 
@@ -514,14 +511,14 @@ avenida_saturation(lua_State *L)
 static int
 avenida_scale(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double factor;
 
 	avn = AVNRASTER_ARG1;
 	factor = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_scale(avn, factor));
+	lua_pushboolean(L, avnraster_scale(*avn, factor));
 	return 1;
 }
 
@@ -532,14 +529,14 @@ avenida_scale(lua_State *L)
 static int
 avenida_sharpen(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double amt;
 
 	avn = AVNRASTER_ARG1;
 	amt = luaL_checknumber(L, 2); 
 	lua_pop(L, 2); 
 
-	lua_pushboolean(L, avnraster_sharpen(avn, amt));
+	lua_pushboolean(L, avnraster_sharpen(*avn, amt));
 	return 1;
 }
 
@@ -550,14 +547,14 @@ avenida_sharpen(lua_State *L)
 static int
 avenida_swirl(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double degrees;
 
 	avn = AVNRASTER_ARG1;
 	degrees = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_swirl(avn, degrees));
+	lua_pushboolean(L, avnraster_swirl(*avn, degrees));
 	return 1;
 }
 
@@ -568,7 +565,7 @@ avenida_swirl(lua_State *L)
 static int
 avenida_tint(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	char *color = NULL;
 	double opacity;
 
@@ -577,7 +574,7 @@ avenida_tint(lua_State *L)
 	opacity = luaL_checknumber(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_tint(avn, color, opacity));
+	lua_pushboolean(L, avnraster_tint(*avn, color, opacity));
 	return 1;
 }
 
@@ -588,12 +585,12 @@ avenida_tint(lua_State *L)
 static int
 avenida_verticalflip(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_verticalflip(avn));
+	lua_pushboolean(L, avnraster_verticalflip(*avn));
 	return 1;
 }
 
@@ -604,7 +601,7 @@ avenida_verticalflip(lua_State *L)
 static int
 avenida_wave(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	double amplitude, wavelength;
 
 	avn = AVNRASTER_ARG1;
@@ -612,7 +609,7 @@ avenida_wave(lua_State *L)
 	wavelength = luaL_checknumber(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_wave(avn, amplitude, wavelength));
+	lua_pushboolean(L, avnraster_wave(*avn, amplitude, wavelength));
 	return 1;
 }
 
@@ -623,14 +620,14 @@ avenida_wave(lua_State *L)
 static int
 avenida_write(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 	char *path;
 
 	avn = AVNRASTER_ARG1;
 	path = (char*)luaL_checkstring(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_write(avn, path));
+	lua_pushboolean(L, avnraster_write(*avn, path));
 	return 1;
 }
 
@@ -641,12 +638,12 @@ avenida_write(lua_State *L)
 static int
 avenida_serialize(lua_State *L)
 {
-	avnraster *avn;
+	avnraster **avn;
 
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushstring(L, avnraster_history_json(avn));
+	lua_pushstring(L, avnraster_history_json(*avn));
 	return 1;
 }
 
