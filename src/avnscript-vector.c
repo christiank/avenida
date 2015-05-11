@@ -6,14 +6,13 @@
  */
 
 #include <stdbool.h>
-#include <string.h>
 
 #include <lua.h>
 #include <lauxlib.h>
 
 #include "vector.h"
 
-#define AVNVECTOR_ARG1 ((avnvector*)luaL_checkudata(L, 1, "avnvector"))
+#define AVNVECTOR_ARG1 ((avnvector**)luaL_checkudata(L, 1, "avnvector"))
 
 static int avenida_closepath(lua_State *);
 static int avenida_lineto(lua_State *);
@@ -36,12 +35,12 @@ int luaopen_vector(lua_State *L);
 static int
 avenida_closepath(lua_State *L)
 {
-	avnvector *avn;
+	avnvector **avn;
 
 	avn = AVNVECTOR_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnvector_closepath(avn));
+	lua_pushboolean(L, avnvector_closepath(*avn));
 	return 1;
 }
 
@@ -52,7 +51,7 @@ avenida_closepath(lua_State *L)
 static int
 avenida_lineto(lua_State *L)
 {
-	avnvector *avn;
+	avnvector **avn;
 	int x, y;
 
 	avn = AVNVECTOR_ARG1;
@@ -60,7 +59,7 @@ avenida_lineto(lua_State *L)
 	y = luaL_checknumber(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnvector_lineto(avn, x, y));
+	lua_pushboolean(L, avnvector_lineto(*avn, x, y));
 	return 1;
 }
 
@@ -71,7 +70,7 @@ avenida_lineto(lua_State *L)
 static int
 avenida_moveto(lua_State *L)
 {
-	avnvector *avn;
+	avnvector **avn;
 	int x, y;
 
 	avn = AVNVECTOR_ARG1;
@@ -79,7 +78,7 @@ avenida_moveto(lua_State *L)
 	y = luaL_checknumber(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnvector_moveto(avn, x, y));
+	lua_pushboolean(L, avnvector_moveto(*avn, x, y));
 	return 1;
 }
 
@@ -90,19 +89,16 @@ avenida_moveto(lua_State *L)
 static int
 avenida_new(lua_State *L)
 {
-	avnvector *avn, *tmp;
+	avnvector **avn;
 	size_t width, height;
 
 	width = (size_t)luaL_checkinteger(L, 1);
 	height = (size_t)luaL_checkinteger(L, 2);
 	lua_pop(L, 2);
 
-	avn = (avnvector*)lua_newuserdata(L, sizeof(avnvector));
-	tmp = avnvector_new(width, height);
-
-	memmove(avn, tmp, sizeof(avnvector));
+	avn = (avnvector**)lua_newuserdata(L, sizeof(avnvector*));
+	*avn = avnvector_new(width, height);
 	luaL_setmetatable(L, "avnvector");
-
 	return 1;
 }
 
@@ -113,12 +109,12 @@ avenida_new(lua_State *L)
 static int
 avenida_openpath(lua_State *L)
 {
-	avnvector *avn;
+	avnvector **avn;
 
 	avn = AVNVECTOR_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnvector_openpath(avn));
+	lua_pushboolean(L, avnvector_openpath(*avn));
 	return 1;
 }
 
@@ -150,12 +146,12 @@ avenida_setwidth(lua_State *L)
 static int
 avenida_stroke(lua_State *L)
 {
-	avnvector *avn;
+	avnvector **avn;
 
 	avn = AVNVECTOR_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnvector_stroke(avn));
+	lua_pushboolean(L, avnvector_stroke(*avn));
 	return 1;
 }
 
@@ -166,14 +162,14 @@ avenida_stroke(lua_State *L)
 static int
 avenida_write(lua_State *L)
 {
-	avnvector *avn;
+	avnvector **avn;
 	char *path = NULL;
 
 	avn = AVNVECTOR_ARG1;
 	path = (char *)luaL_checkstring(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnvector_write(avn, path));
+	lua_pushboolean(L, avnvector_write(*avn, path));
 	return 1;
 }
 
