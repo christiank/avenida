@@ -9,20 +9,30 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "raster.h"
-#include "script.h"
+static void version(void);
 
 int
 main(int argc, char *argv[])
 {
-	avnraster *r;
-	avnscript *s;
+	int ch;
 
-	r = avnraster_new("ohoh");
-	avnraster_free(r);
-
-	s = avnscript_new("ojojo");
-	avnscript_free(s);
+	while ((ch = getopt(argc, argv, "v")) != -1) {
+		switch (ch) {
+		case 'v':
+			version();
+			break;
+		case '?': /* FALLTHROUGH */
+		default:
+			return EXIT_SUCCESS;
+		}
+	}
 
 	return EXIT_SUCCESS;
+}
+
+
+static void
+version(void)
+{
+	printf("v0.0.1\n");
 }
