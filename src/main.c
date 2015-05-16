@@ -61,7 +61,7 @@ main(int argc, char *argv[])
 	luaL_openlibs(L);
 
 	if (luaL_dofile(L, infile_path)) {
-		warnx("there were errors in %s", infile_path);
+		warnx("%s", luaL_tolstring(L, -1, NULL));
 		goto cleanup;
 	}
 
