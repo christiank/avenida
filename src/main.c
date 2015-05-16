@@ -11,6 +11,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
+
 #include "avenida.h"
 
 static void usage(void);
@@ -21,6 +25,7 @@ main(int argc, char *argv[])
 {
 	int ch;
 	char infile_path[PATH_MAX];
+	lua_State *L = NULL;
 
 	while ((ch = getopt(argc, argv, "hv")) != -1) {
 		switch (ch) {
@@ -47,6 +52,22 @@ main(int argc, char *argv[])
 	}
 
 	snprintf(infile_path, PATH_MAX, "%s", argv[0]);
+
+	if ((L = luaL_newstate()) == NULL) {
+		warnx("couldn't create a new Lua state");
+		goto cleanup;
+	}
+
+	luaL_openlibs(L);
+
+	if (luaL_dofile(L, infile_path)) {
+		warnx("there were errors in %s", infile_path);
+		goto cleanup;
+	}
+
+cleanup:
+	if (L != NULL)
+		lua_close(L);
 
 	return EXIT_SUCCESS;
 }
