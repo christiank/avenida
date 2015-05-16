@@ -6,6 +6,7 @@
  */
 
 #include <err.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -19,6 +20,7 @@ int
 main(int argc, char *argv[])
 {
 	int ch;
+	char infile_path[PATH_MAX];
 
 	while ((ch = getopt(argc, argv, "hv")) != -1) {
 		switch (ch) {
@@ -36,6 +38,16 @@ main(int argc, char *argv[])
 		}
 	}
 
+	argc -= optind;
+	argv += optind;
+
+	if (argc < 1) {
+		usage();
+		return EXIT_FAILURE;
+	}
+
+	snprintf(infile_path, PATH_MAX, "%s", argv[0]);
+
 	return EXIT_SUCCESS;
 }
 
@@ -43,7 +55,7 @@ main(int argc, char *argv[])
 static void
 usage(void)
 {
-	warnx("usage: %s [-h] [-v]", getprogname());
+	warnx("usage: %s [-h] [-v] script", getprogname());
 }
 
 
