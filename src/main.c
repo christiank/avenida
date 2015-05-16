@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "avenida.h"
+
 static void usage(void);
 static void version(void);
 
@@ -48,5 +50,5 @@ usage(void)
 static void
 version(void)
 {
-	printf("v0.0.1\n");
+	printf("%s %s\n", getprogname(), AVENIDA_VERSION);
 }
