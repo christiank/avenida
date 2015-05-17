@@ -152,7 +152,7 @@ avenida_crop(lua_State *L)
 
 
 /*
- * bool = avenida.despeckle(avnraster)
+ * avenida.despeckle(avnraster)
  */
 static int
 avenida_despeckle(lua_State *L)
@@ -162,8 +162,10 @@ avenida_despeckle(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_despeckle(*avn));
-	return 1;
+	if (!lua_pushboolean(L, avnraster_despeckle(*avn)))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
