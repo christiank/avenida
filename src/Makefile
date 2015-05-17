@@ -1,7 +1,7 @@
 # Avenida Makefile
 # Christian Koch <cfkoch@sdf.lonestar.org>
 
-.PHONY: all clean tests raster-tests vector-tests
+.PHONY: all clean
 .SUFFIXES: .c .o
 .MAIN: all
 
@@ -9,7 +9,6 @@
 CC= clang -Wall
 
 LUADIR=./lua
-LUA=lua
 LUA_PLATFORM?=macosx
 LUA_CFLAGS= -I$(LUADIR)/src
 LUA_LDFLAGS= -L$(LUADIR)/src
@@ -73,11 +72,3 @@ $(OUTBIN): $(OBJS)
 
 clean:
 	rm -f $(OUTBIN) $(LUA_MODULES) *.o *.so *.core *.png
-
-tests: raster-tests vector-tests
-
-raster-tests:
-	$(LUA) ../example/hello-raster.lua ../example/test.png
-
-vector-tests:
-	$(LUA) ../example/hello-vector.lua
