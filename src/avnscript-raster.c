@@ -540,7 +540,7 @@ avenida_roll(lua_State *L)
 
 
 /*
- * bool = avenida.rotate(avnraster, angle, bgcolor?)
+ * avenida.rotate(avnraster, angle, bgcolor?)
  */
 static int
 avenida_rotate(lua_State *L)
@@ -560,8 +560,10 @@ avenida_rotate(lua_State *L)
 		lua_pop(L, 3);
 	}
 
-	lua_pushboolean(L, avnraster_rotate(*avn, angle, bgcolor));
-	return 1;
+	if (!avnraster_rotate(*avn, angle, bgcolor))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
