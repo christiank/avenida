@@ -617,7 +617,7 @@ avenida_scale(lua_State *L)
 
 
 /*
- * bool = avenida.sharpen(avnraster, amt)
+ * avenida.sharpen(avnraster, amt)
  */
 static int
 avenida_sharpen(lua_State *L)
@@ -629,8 +629,10 @@ avenida_sharpen(lua_State *L)
 	amt = luaL_checknumber(L, 2); 
 	lua_pop(L, 2); 
 
-	lua_pushboolean(L, avnraster_sharpen(*avn, amt));
-	return 1;
+	if (!avnraster_sharpen(*avn, amt))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
