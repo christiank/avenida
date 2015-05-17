@@ -33,6 +33,7 @@ main(int argc, char *argv[])
 			break;
 		case 'v':
 			version();
+			return EXIT_SUCCESS;
 			break;
 		case '?': /* FALLTHROUGH */
 		default:
