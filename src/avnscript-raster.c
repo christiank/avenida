@@ -637,7 +637,7 @@ avenida_sharpen(lua_State *L)
 
 
 /*
- * bool = avenida.swirl(avnraster, degrees)
+ * avenida.swirl(avnraster, degrees)
  */
 static int
 avenida_swirl(lua_State *L)
@@ -649,8 +649,10 @@ avenida_swirl(lua_State *L)
 	degrees = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_swirl(*avn, degrees));
-	return 1;
+	if (!avnraster_swirl(*avn, degrees))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
