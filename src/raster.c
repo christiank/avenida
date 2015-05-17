@@ -416,9 +416,6 @@ avnraster_despeckle(avnraster *avn)
 static bool
 __avnraster_emboss(avnraster *avn, const double amt)
 {
-	if (amt < 0.0)
-		return false;
-
 	if (amt == 0.0)
 		return true; /* XXX dunno if this correct */
 
