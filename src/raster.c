@@ -361,9 +361,6 @@ static bool
 __avnraster_crop(avnraster *avn, const unsigned int x, const unsigned int y,
 	const size_t width, const size_t height)
 {
-	if ((width > avn->info.width) || (height > avn->info.height))
-		return false;
-
 	if ((x == 0) && (y == 0) && (width == avn->info.width) &&
 		(height == avn->info.height))
 			return true;

@@ -121,7 +121,7 @@ avenida_charcoal(lua_State *L)
 
 
 /*
- * bool = avenida.crop(avnraster, x, y, width, height)
+ * avenida.crop(avnraster, x, y, width, height)
  */
 static int
 avenida_crop(lua_State *L)
@@ -137,8 +137,17 @@ avenida_crop(lua_State *L)
 	height = (size_t)luaL_checkinteger(L, 5);
 	lua_pop(L, 5);
 
-	lua_pushboolean(L, avnraster_crop(*avn, x, y, width, height));
-	return 1;
+	if (width > (*avn)->info.width)
+		return luaL_error(L, "requested width %d is greater than original width",
+			width);
+	if (height > (*avn)->info.height)
+		return luaL_error(L, "requested height %d is greater than original height",
+			height);
+
+	if (!avnraster_crop(*avn, x, y, width, height))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
