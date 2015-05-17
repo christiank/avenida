@@ -9,6 +9,7 @@
 #define AVENIDA_SCRIPT_H
 
 #include <limits.h>
+#include <stdbool.h>
 
 #include <lua.h>
 
@@ -24,5 +25,7 @@ typedef struct avnscript avnscript;
 
 avnscript *avnscript_new(const char *path);
 void avnscript_free(avnscript *avn);
+void avnscript_setup(avnscript *avn);
+bool avnscript_execute(avnscript *avn);
 
 #endif /* AVENIDA_SCRIPT_H */
