@@ -6,7 +6,6 @@
 ## System Requirements
 
 - BSD Make
-- Lua
 - GraphicsMagick
 - Cairo
 
