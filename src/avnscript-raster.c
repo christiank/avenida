@@ -14,6 +14,8 @@
 
 #define AVNRASTER_ARG1 ((avnraster**)luaL_checkudata(L, 1, "avnraster"))
 #define DEFAULT_ERROR (luaL_error(L, "%s", __func__))
+#define RANGE_ERROR(value) \
+	(luaL_error(L, "value %f is outside acceptable range", value))
 
 static int avenida_border(lua_State *);
 static int avenida_brightness(lua_State *);
@@ -94,7 +96,7 @@ avenida_brightness(lua_State *L)
 	lua_pop(L, 2);
 
 	if ((value < -100.0) || (value > 100.0))
-		return luaL_error(L, "value %f is outside acceptable range", value);
+		return RANGE_ERROR(value);
 
 	if (!avnraster_brightness(*avn, value))
 		return DEFAULT_ERROR;
@@ -114,7 +116,7 @@ avenida_charcoal(lua_State *L)
 	lua_pop(L, 2);
 
 	if (amt < 0.0)
-		return luaL_error(L, "value %f is outside acceptable range", amt);
+		return RANGE_ERROR(amt);
 
 	if (!avnraster_charcoal(*avn, amt))
 		return DEFAULT_ERROR;
@@ -183,7 +185,7 @@ avenida_emboss(lua_State *L)
 	lua_pop(L, 2);
 
 	if (amt < 0.0)
-		return luaL_error(L, "value %f is oustside acceptable range", amt);
+		return RANGE_ERROR(amt);
 
 	if (!avnraster_emboss(*avn, amt))
 		return DEFAULT_ERROR;
@@ -224,7 +226,7 @@ avenida_gamma(lua_State *L)
 	lua_pop(L, 2);
 
 	if (gamma < 0.0)
-		return luaL_error(L, "value %f is outside acceptable range", gamma);
+		return RANGE_ERROR(gamma);
 
 	if (!avnraster_gamma(*avn, gamma))
 		return DEFAULT_ERROR;
@@ -247,7 +249,7 @@ avenida_gaussianblur(lua_State *L)
 	lua_pop(L, 2);
 
 	if (amt < 0.0)
-		return luaL_error(L, "value %f is outside acceptable range", amt);
+		return RANGE_ERROR(amt);
 
 	if (avnraster_gaussianblur(*avn, amt))
 		return DEFAULT_ERROR;
@@ -291,7 +293,7 @@ avenida_hue(lua_State *L)
 	lua_pop(L, 2);
 
 	if ((value < -100.0) || (value > 100.0))
-		return luaL_error(L, "value %f is outside acceptable range", value);
+		return RANGE_ERROR(value);
 
 	if (!avnraster_hue(*avn, value))
 		return DEFAULT_ERROR;
@@ -343,7 +345,7 @@ avenida_motionblur(lua_State *L)
 	lua_pop(L, 3);
 
 	if (amt < 0.0)
-		return luaL_error(L, "value %f is outside acceptable range", amt);
+		return RANGE_ERROR(amt);
 
 	if (!avnraster_motionblur(*avn, amt, angle))
 		return DEFAULT_ERROR;
@@ -422,7 +424,7 @@ avenida_oilpaint(lua_State *L)
 	lua_pop(L, 2);
 
 	if (radius < 0.0)
-		return luaL_error(L, "value %f is outside acceptable range", radius);
+		return RANGE_ERROR(radius);
 
 	if (!avnraster_oilpaint(*avn, radius))
 		return DEFAULT_ERROR;
@@ -585,7 +587,7 @@ avenida_saturation(lua_State *L)
 	lua_pop(L, 2);
 
 	if ((value < -100.0) || (value > 100.0))
-		return luaL_error(L, "value %f is outside acceptable range", value);
+		return RANGE_ERROR(value);
 
 	if (!avnraster_saturation(*avn, value))
 		return DEFAULT_ERROR;
@@ -608,7 +610,7 @@ avenida_scale(lua_State *L)
 	lua_pop(L, 2);
 
 	if (factor <= 0.0)
-		return luaL_error(L, "value %f is outside acceptable range", factor);
+		return RANGE_ERROR(factor);
 
 	if (!avnraster_scale(*avn, factor))
 		return DEFAULT_ERROR;
@@ -712,9 +714,9 @@ avenida_wave(lua_State *L)
 	lua_pop(L, 3);
 
 	if (amplitude < 0.0)
-		return luaL_error(L, "value %f is outside acceptable range", amplitude);
+		return RANGE_ERROR(amplitude);
 	if (wavelength < 0.0)
-		return luaL_error(L, "value %f is outside acceptable range", wavelength);
+		return RANGE_ERROR(wavelength);
 
 	if (!avnraster_wave(*avn, amplitude, wavelength))
 		return DEFAULT_ERROR;
