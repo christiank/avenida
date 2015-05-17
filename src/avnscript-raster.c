@@ -75,7 +75,10 @@ avenida_border(lua_State *L)
 
 
 /*
- * bool = avenida.brightness(avnraster, value)
+ * avenida.brightness(avnraster, value)
+ *
+ * Note: GraphicsMagick's documentation is a complete LIE. The range for the
+ * args of MagickModulateImage() is (0..200), not (-100..100).
  */
 static int
 avenida_brightness(lua_State *L)
@@ -87,8 +90,13 @@ avenida_brightness(lua_State *L)
 	value = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_brightness(*avn, value));
-	return 1;
+	if ((value < -100.0) || (value > 100.0))
+		return luaL_error(L, "value %f is outside acceptable range", value);
+
+	if (!avnraster_brightness(*avn, value))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 

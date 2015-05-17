@@ -303,16 +303,9 @@ avnraster_border(avnraster *avn, const size_t width, const size_t height,
 }
 
 
-/*
- * Note: GraphicsMagick's documentation is a complete LIE. The range for the
- * args of MagickModulateImage() is (0..200), not (-100..100).
- */
 static bool
 __avnraster_brightness(avnraster *avn, const double value)
 {
-	if ((value < -100.0) || (value > 100.0))
-		return false;
-
 	if (value == 0.0)
 		return true;
 
