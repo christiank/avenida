@@ -1,12 +1,13 @@
 # Avenida Makefile
 # Christian Koch <cfkoch@sdf.lonestar.org>
 
-.PHONY: all clean
+.PHONY: all clean install
 .SUFFIXES: .c .o
 .MAIN: all
 
 #CC?= clang -Wall
 CC= clang -Wall
+PREFIX=/usr/local
 
 LUADIR=./lua
 LUA_PLATFORM?=macosx
@@ -72,3 +73,9 @@ $(OUTBIN): $(OBJS)
 
 clean:
 	rm -f $(OUTBIN) $(LUA_MODULES) *.o *.so *.core *.png
+
+install:
+	mkdir -p $(DESTDIR)$(PREFIX)/bin
+	mkdir -p $(DESTDIR)$(PREFIX)/man/man1
+	cp $(OUTBIN) $(DESTDIR)$(PREFIX)/bin
+	cp ../man/avenida.1 $(DESTDIR)$(PREFIX)/man/man1
