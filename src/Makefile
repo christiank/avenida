@@ -39,6 +39,7 @@ LIBS= $(LUA_LIBS) $(GM_LIBS) $(CAIRO_LIBS)
 
 OBJS= \
 	cJSON.o \
+	status.o \
 	commands.o \
 	main.o \
 	media.o \
