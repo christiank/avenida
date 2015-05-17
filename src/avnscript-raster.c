@@ -233,7 +233,7 @@ avenida_gamma(lua_State *L)
 
 
 /*
- * bool avenida.gaussianblur(avnraster, amount)
+ * avenida.gaussianblur(avnraster, amount)
  */
 static int
 avenida_gaussianblur(lua_State *L)
@@ -245,8 +245,13 @@ avenida_gaussianblur(lua_State *L)
 	amt = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_gaussianblur(*avn, amt));
-	return 1;
+	if (amt < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", amt);
+
+	if (avnraster_gaussianblur(*avn, amt))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 

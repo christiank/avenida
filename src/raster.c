@@ -493,9 +493,6 @@ avnraster_gamma(avnraster *avn, const double gamma)
 static bool
 __avnraster_gaussianblur(avnraster *avn, const double amt)
 {
-	if (amt < 0.0)
-		return false;
-
 	if (amt == 0.0)
 		return true; /* XXX dunno if this is correct */
 
