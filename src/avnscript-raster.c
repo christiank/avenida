@@ -568,7 +568,10 @@ avenida_rotate(lua_State *L)
 
 
 /*
- * bool = avenida.saturation(avnraster, value)
+ * avenida.saturation(avnraster, value)
+ *
+ * See the note about MagickModulateImage() in the documentation for
+ * avenida_brightness().
  */
 static int
 avenida_saturation(lua_State *L)
@@ -580,8 +583,13 @@ avenida_saturation(lua_State *L)
 	value = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_saturation(*avn, value));
-	return 1;
+	if ((value < -100.0) || (value > 100.0))
+		return luaL_error(L, "value %f is outside acceptable range", value);
+
+	if (!avnraster_saturation(*avn, value))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 

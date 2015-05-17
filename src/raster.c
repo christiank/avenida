@@ -809,16 +809,9 @@ avnraster_rotate(avnraster *avn, const double angle, const char *bgcolor)
 }
 
 
-/*
- * See the note about MagickModulateImage() in the documentation for
- * avnraster_brightness().
- */
 static bool
 __avnraster_saturation(avnraster *avn, const double value)
 {
-	if ((value < -100.0) || (value > 100.0))
-		return false;
-
 	if (value == 0.0)
 		return true;
 
