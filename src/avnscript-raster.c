@@ -164,7 +164,7 @@ avenida_despeckle(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	if (!lua_pushboolean(L, avnraster_despeckle(*avn)))
+	if (!avnraster_despeckle(*avn))
 		return luaL_error(L, NULL);
 
 	return 0;
