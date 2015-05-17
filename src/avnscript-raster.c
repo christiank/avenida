@@ -54,7 +54,7 @@ int luaopen_raster(lua_State *L);
 /* */
 
 /*
- * bool = avenida.border(avnraster, width, height, color)
+ * avenida.border(avnraster, width, height, color)
  */
 static int
 avenida_border(lua_State *L)
@@ -69,8 +69,10 @@ avenida_border(lua_State *L)
 	color = (char*)luaL_checkstring(L, 4);
 	lua_pop(L, 4);
 
-	lua_pushboolean(L, avnraster_border(*avn, width, height, color));
-	return 1;
+	if (!avnraster_border(*avn, width, height, color))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
