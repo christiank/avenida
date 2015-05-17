@@ -973,9 +973,6 @@ static bool
 __avnraster_wave(avnraster *avn, const double amplitude,
 	const double wavelength)
 {
-	if ((amplitude < 0.0) || (wavelength < 0.0))
-		return false;
-
 	if (amplitude == 0.0)
 		return true;
 

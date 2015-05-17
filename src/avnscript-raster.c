@@ -697,7 +697,7 @@ avenida_verticalflip(lua_State *L)
 
 
 /*
- * bool = avenida.wave(avnraster, amplitude, wavelength)
+ * avenida.wave(avnraster, amplitude, wavelength)
  */
 static int
 avenida_wave(lua_State *L)
@@ -710,8 +710,15 @@ avenida_wave(lua_State *L)
 	wavelength = luaL_checknumber(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_wave(*avn, amplitude, wavelength));
-	return 1;
+	if (amplitude < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", amplitude);
+	if (wavelength < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", wavelength);
+
+	if (!avnraster_wave(*avn, amplitude, wavelength))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
