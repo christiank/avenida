@@ -675,15 +675,9 @@ avnraster_normalize(avnraster *avn)
 }
 
 
-/*
- * Apparently, 0.0 is an acceptable radius.
- */
 static bool
 __avnraster_oilpaint(avnraster *avn, const double radius)
 {
-	if (radius < 0.0)
-		return false;
-
 	if (MagickOilPaintImage(avn->image, radius) == MagickPass)
 		return true;
 	else

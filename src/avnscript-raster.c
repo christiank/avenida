@@ -406,7 +406,9 @@ avenida_normalize(lua_State *L)
 
 
 /*
- * bool = avenida.oilpaint(avnraster, radius)
+ * avenida.oilpaint(avnraster, radius)
+ *
+ * Apparently, 0.0 is an acceptable radius.
  */
 static int
 avenida_oilpaint(lua_State *L)
@@ -418,8 +420,13 @@ avenida_oilpaint(lua_State *L)
 	radius = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_oilpaint(*avn, radius));
-	return 1;
+	if (radius < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", radius);
+
+	if (!avnraster_oilpaint(*avn, radius))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
