@@ -22,7 +22,7 @@ main(int argc, char *argv[])
 {
 	int ch;
 	char infile_path[PATH_MAX];
-	avnscript *avn;
+	avnscript *avn = NULL;
 
 	while ((ch = getopt(argc, argv, "hv")) != -1) {
 		switch (ch) {
@@ -49,9 +49,18 @@ main(int argc, char *argv[])
 	}
 
 	snprintf(infile_path, PATH_MAX, "%s", argv[0]);
-	avn = avnscript_new(infile_path);
+
+	if ((avn = avnscript_new(infile_path)) == NULL) {
+		warnx("couldn't create struct avnscript");
+		goto cleanup;
+	}
+
 	avnscript_setup(avn);
-	avnscript_execute(avn);
+
+	if (!avnscript_execute(avn))
+		goto cleanup;
+
+cleanup:
 	avnscript_free(avn);
 	return EXIT_SUCCESS;
 }
