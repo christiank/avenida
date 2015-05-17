@@ -21,6 +21,7 @@ int
 main(int argc, char *argv[])
 {
 	int ch;
+	int rv = EXIT_SUCCESS;
 	char infile_path[PATH_MAX];
 	avnscript *avn = NULL;
 
@@ -52,17 +53,20 @@ main(int argc, char *argv[])
 
 	if ((avn = avnscript_new(infile_path)) == NULL) {
 		warnx("couldn't create struct avnscript");
+		rv = EXIT_FAILURE;
 		goto cleanup;
 	}
 
 	avnscript_setup(avn);
 
-	if (!avnscript_execute(avn))
+	if (!avnscript_execute(avn)) {
+		rv = EXIT_FAILURE;
 		goto cleanup;
+	}
 
 cleanup:
 	avnscript_free(avn);
-	return EXIT_SUCCESS;
+	return rv;
 }
 
 
