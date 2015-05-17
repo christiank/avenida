@@ -303,16 +303,9 @@ avnraster_border(avnraster *avn, const size_t width, const size_t height,
 }
 
 
-/*
- * Note: GraphicsMagick's documentation is a complete LIE. The range for the
- * args of MagickModulateImage() is (0..200), not (-100..100).
- */
 static bool
 __avnraster_brightness(avnraster *avn, const double value)
 {
-	if ((value < -100.0) || (value > 100.0))
-		return false;
-
 	if (value == 0.0)
 		return true;
 
@@ -340,9 +333,6 @@ avnraster_brightness(avnraster *avn, const double value)
 static bool
 __avnraster_charcoal(avnraster *avn, const double amt)
 {
-	if (amt < 0.0)
-		return false;
-
 	if (amt == 0.0)
 		return true; /* XXX dunno if this is correct */
 
@@ -371,9 +361,6 @@ static bool
 __avnraster_crop(avnraster *avn, const unsigned int x, const unsigned int y,
 	const size_t width, const size_t height)
 {
-	if ((width > avn->info.width) || (height > avn->info.height))
-		return false;
-
 	if ((x == 0) && (y == 0) && (width == avn->info.width) &&
 		(height == avn->info.height))
 			return true;
@@ -429,9 +416,6 @@ avnraster_despeckle(avnraster *avn)
 static bool
 __avnraster_emboss(avnraster *avn, const double amt)
 {
-	if (amt < 0.0)
-		return false;
-
 	if (amt == 0.0)
 		return true; /* XXX dunno if this correct */
 
@@ -485,9 +469,6 @@ avnraster_equalize(avnraster *avn)
 static bool
 __avnraster_gamma(avnraster *avn, const double gamma)
 {
-	if (gamma < 0.0)
-		return false;
-
 	if (MagickGammaImage(avn->image, gamma) == MagickPass)
 		return true;
 	else
@@ -512,9 +493,6 @@ avnraster_gamma(avnraster *avn, const double gamma)
 static bool
 __avnraster_gaussianblur(avnraster *avn, const double amt)
 {
-	if (amt < 0.0)
-		return false;
-
 	if (amt == 0.0)
 		return true; /* XXX dunno if this is correct */
 
@@ -562,16 +540,9 @@ avnraster_horizontalflip(avnraster *avn)
 }
 
 
-/*
- * See the note about MagickModulateImage() in the documentation for
- * avnraster_brightness().
- */
 static bool
 __avnraster_hue(avnraster *avn, const double value)
 {
-	if ((value < -100.0) || (value > 100.0))
-		return false;
-
 	if (value == 0.0)
 		return true;
 
@@ -610,9 +581,6 @@ avnraster_levels(avnraster *avn, const double black, const double white,
 static bool
 __avnraster_motionblur(avnraster *avn, const double amt, const double angle)
 {
-	if (amt < 0.0)
-		return false;
-
 	if (amt == 0.0)
 		return true; /* XXX dunno if this correct */
 
@@ -707,15 +675,9 @@ avnraster_normalize(avnraster *avn)
 }
 
 
-/*
- * Apparently, 0.0 is an acceptable radius.
- */
 static bool
 __avnraster_oilpaint(avnraster *avn, const double radius)
 {
-	if (radius < 0.0)
-		return false;
-
 	if (MagickOilPaintImage(avn->image, radius) == MagickPass)
 		return true;
 	else
@@ -847,16 +809,9 @@ avnraster_rotate(avnraster *avn, const double angle, const char *bgcolor)
 }
 
 
-/*
- * See the note about MagickModulateImage() in the documentation for
- * avnraster_brightness().
- */
 static bool
 __avnraster_saturation(avnraster *avn, const double value)
 {
-	if ((value < -100.0) || (value > 100.0))
-		return false;
-
 	if (value == 0.0)
 		return true;
 
@@ -885,9 +840,6 @@ static bool
 __avnraster_scale(avnraster *avn, const double factor)
 {
 	unsigned long new_w, new_h;
-
-	if (factor < 0.0)
-		return false;
 
 	if (factor == 1.0)
 		return true;
@@ -1021,9 +973,6 @@ static bool
 __avnraster_wave(avnraster *avn, const double amplitude,
 	const double wavelength)
 {
-	if ((amplitude < 0.0) || (wavelength < 0.0))
-		return false;
-
 	if (amplitude == 0.0)
 		return true;
 

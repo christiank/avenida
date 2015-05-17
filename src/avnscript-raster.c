@@ -54,7 +54,7 @@ int luaopen_raster(lua_State *L);
 /* */
 
 /*
- * bool = avenida.border(avnraster, width, height, color)
+ * avenida.border(avnraster, width, height, color)
  */
 static int
 avenida_border(lua_State *L)
@@ -69,13 +69,18 @@ avenida_border(lua_State *L)
 	color = (char*)luaL_checkstring(L, 4);
 	lua_pop(L, 4);
 
-	lua_pushboolean(L, avnraster_border(*avn, width, height, color));
-	return 1;
+	if (!avnraster_border(*avn, width, height, color))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.brightness(avnraster, value)
+ * avenida.brightness(avnraster, value)
+ *
+ * Note: GraphicsMagick's documentation is a complete LIE. The range for the
+ * args of MagickModulateImage() is (0..200), not (-100..100).
  */
 static int
 avenida_brightness(lua_State *L)
@@ -87,8 +92,13 @@ avenida_brightness(lua_State *L)
 	value = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_brightness(*avn, value));
-	return 1;
+	if ((value < -100.0) || (value > 100.0))
+		return luaL_error(L, "value %f is outside acceptable range", value);
+
+	if (!avnraster_brightness(*avn, value))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
@@ -102,13 +112,18 @@ avenida_charcoal(lua_State *L)
 	amt = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_charcoal(*avn, amt));
-	return 1;
+	if (amt < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", amt);
+
+	if (!avnraster_charcoal(*avn, amt))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.crop(avnraster, x, y, width, height)
+ * avenida.crop(avnraster, x, y, width, height)
  */
 static int
 avenida_crop(lua_State *L)
@@ -124,13 +139,22 @@ avenida_crop(lua_State *L)
 	height = (size_t)luaL_checkinteger(L, 5);
 	lua_pop(L, 5);
 
-	lua_pushboolean(L, avnraster_crop(*avn, x, y, width, height));
-	return 1;
+	if (width > (*avn)->info.width)
+		return luaL_error(L, "requested width %d is greater than original width",
+			width);
+	if (height > (*avn)->info.height)
+		return luaL_error(L, "requested height %d is greater than original height",
+			height);
+
+	if (!avnraster_crop(*avn, x, y, width, height))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.despeckle(avnraster)
+ * avenida.despeckle(avnraster)
  */
 static int
 avenida_despeckle(lua_State *L)
@@ -140,8 +164,10 @@ avenida_despeckle(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_despeckle(*avn));
-	return 1;
+	if (!avnraster_despeckle(*avn))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
@@ -155,13 +181,18 @@ avenida_emboss(lua_State *L)
 	amt = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_emboss(*avn, amt));
-	return 1;
+	if (amt < 0.0)
+		return luaL_error(L, "value %f is oustside acceptable range", amt);
+
+	if (!avnraster_emboss(*avn, amt))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.equalize(avnraster)
+ * avenida.equalize(avnraster)
  */
 static int
 avenida_equalize(lua_State *L)
@@ -171,13 +202,15 @@ avenida_equalize(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_equalize(*avn));
-	return 1;
+	if (!avnraster_equalize(*avn))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.gamma(avnraster, gamma)
+ * avenida.gamma(avnraster, gamma)
  */
 static int
 avenida_gamma(lua_State *L)
@@ -189,13 +222,18 @@ avenida_gamma(lua_State *L)
 	gamma = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_gamma(*avn, gamma));
-	return 1;
+	if (gamma < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", gamma);
+
+	if (!avnraster_gamma(*avn, gamma))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool avenida.gaussianblur(avnraster, amount)
+ * avenida.gaussianblur(avnraster, amount)
  */
 static int
 avenida_gaussianblur(lua_State *L)
@@ -207,13 +245,18 @@ avenida_gaussianblur(lua_State *L)
 	amt = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_gaussianblur(*avn, amt));
-	return 1;
+	if (amt < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", amt);
+
+	if (avnraster_gaussianblur(*avn, amt))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.horizontalflip(avnraster)
+ * avenida.horizontalflip(avnraster)
  */
 static int
 avenida_horizontalflip(lua_State *L)
@@ -223,13 +266,18 @@ avenida_horizontalflip(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_horizontalflip(*avn));
-	return 1;
+	if (!avnraster_horizontalflip(*avn))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.hue(avnraster, value)
+ * avenida.hue(avnraster, value)
+ *
+ * See the note about MagickModulateImage() in the documentation for
+ * avnraster_brightness().
  */
 static int
 avenida_hue(lua_State *L)
@@ -241,8 +289,13 @@ avenida_hue(lua_State *L)
 	value = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_hue(*avn, value));
-	return 1;
+	if ((value < -100.0) || (value > 100.0))
+		return luaL_error(L, "value %f is outside acceptable range", value);
+
+	if (!avnraster_hue(*avn, value))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
@@ -288,13 +341,18 @@ avenida_motionblur(lua_State *L)
 	angle = luaL_checknumber(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_motionblur(*avn, amt, angle));
-	return 1;
+	if (amt < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", amt);
+
+	if (!avnraster_motionblur(*avn, amt, angle))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.negate(avnraster)
+ * avenida.negate(avnraster)
  */
 static int
 avenida_negate(lua_State *L)
@@ -304,13 +362,15 @@ avenida_negate(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_negate(*avn));
-	return 1;
+	if (!avnraster_negate(*avn))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.negategrays(avnraster)
+ * avenida.negategrays(avnraster)
  */
 static int
 avenida_negategrays(lua_State *L)
@@ -320,13 +380,15 @@ avenida_negategrays(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_negategrays(*avn));
-	return 1;
+	if (!avnraster_negategrays(*avn))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.normalize(avnraster)
+ * avenida.normalize(avnraster)
  */
 static int
 avenida_normalize(lua_State *L)
@@ -336,13 +398,17 @@ avenida_normalize(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_normalize(*avn));
-	return 1;
+	if (!avnraster_normalize(*avn))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.oilpaint(avnraster, radius)
+ * avenida.oilpaint(avnraster, radius)
+ *
+ * Apparently, 0.0 is an acceptable radius.
  */
 static int
 avenida_oilpaint(lua_State *L)
@@ -354,8 +420,13 @@ avenida_oilpaint(lua_State *L)
 	radius = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_oilpaint(*avn, radius));
-	return 1;
+	if (radius < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", radius);
+
+	if (!avnraster_oilpaint(*avn, radius))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
@@ -389,7 +460,7 @@ avenida_open(lua_State *L)
 
 
 /*
- * bool = avenida.radialblur(avnraster, angle)
+ * avenida.radialblur(avnraster, angle)
  */
 static int
 avenida_radialblur(lua_State *L)
@@ -401,8 +472,10 @@ avenida_radialblur(lua_State *L)
 	angle = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_radialblur(*avn, angle));
-	return 1;
+	if (!avnraster_radialblur(*avn, angle))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
@@ -425,7 +498,7 @@ avenida_render(lua_State *L)
 
 
 /*
- * bool = avenida.resize(avnraster, width, height)
+ * avenida.resize(avnraster, width, height)
  */
 static int
 avenida_resize(lua_State *L)
@@ -438,13 +511,15 @@ avenida_resize(lua_State *L)
 	height = (size_t)luaL_checkinteger(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_resize(*avn, width, height));
-	return 1;
+	if (!avnraster_resize(*avn, width, height))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.roll(avnraster, x_amt, y_amt)
+ * avenida.roll(avnraster, x_amt, y_amt)
  */
 static int
 avenida_roll(lua_State *L)
@@ -457,13 +532,15 @@ avenida_roll(lua_State *L)
 	y_amt = luaL_checkinteger(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_roll(*avn, x_amt, y_amt));
-	return 1;
+	if (!avnraster_roll(*avn, x_amt, y_amt))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.rotate(avnraster, angle, bgcolor?)
+ * avenida.rotate(avnraster, angle, bgcolor?)
  */
 static int
 avenida_rotate(lua_State *L)
@@ -483,13 +560,18 @@ avenida_rotate(lua_State *L)
 		lua_pop(L, 3);
 	}
 
-	lua_pushboolean(L, avnraster_rotate(*avn, angle, bgcolor));
-	return 1;
+	if (!avnraster_rotate(*avn, angle, bgcolor))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.saturation(avnraster, value)
+ * avenida.saturation(avnraster, value)
+ *
+ * See the note about MagickModulateImage() in the documentation for
+ * avenida_brightness().
  */
 static int
 avenida_saturation(lua_State *L)
@@ -501,13 +583,18 @@ avenida_saturation(lua_State *L)
 	value = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_saturation(*avn, value));
-	return 1;
+	if ((value < -100.0) || (value > 100.0))
+		return luaL_error(L, "value %f is outside acceptable range", value);
+
+	if (!avnraster_saturation(*avn, value))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.scale(avnraster, factor)
+ * avenida.scale(avnraster, factor)
  */
 static int
 avenida_scale(lua_State *L)
@@ -519,13 +606,18 @@ avenida_scale(lua_State *L)
 	factor = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_scale(*avn, factor));
-	return 1;
+	if (factor <= 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", factor);
+
+	if (!avnraster_scale(*avn, factor))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.sharpen(avnraster, amt)
+ * avenida.sharpen(avnraster, amt)
  */
 static int
 avenida_sharpen(lua_State *L)
@@ -537,13 +629,15 @@ avenida_sharpen(lua_State *L)
 	amt = luaL_checknumber(L, 2); 
 	lua_pop(L, 2); 
 
-	lua_pushboolean(L, avnraster_sharpen(*avn, amt));
-	return 1;
+	if (!avnraster_sharpen(*avn, amt))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.swirl(avnraster, degrees)
+ * avenida.swirl(avnraster, degrees)
  */
 static int
 avenida_swirl(lua_State *L)
@@ -555,13 +649,15 @@ avenida_swirl(lua_State *L)
 	degrees = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_swirl(*avn, degrees));
-	return 1;
+	if (!avnraster_swirl(*avn, degrees))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.tint(avnraster, color, opacity)
+ * avenida.tint(avnraster, color, opacity)
  */
 static int
 avenida_tint(lua_State *L)
@@ -575,13 +671,15 @@ avenida_tint(lua_State *L)
 	opacity = luaL_checknumber(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_tint(*avn, color, opacity));
-	return 1;
+	if (!avnraster_tint(*avn, color, opacity))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.verticalflip(avnraster)
+ * avenida.verticalflip(avnraster)
  */
 static int
 avenida_verticalflip(lua_State *L)
@@ -591,13 +689,15 @@ avenida_verticalflip(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_verticalflip(*avn));
-	return 1;
+	if (!avnraster_verticalflip(*avn))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
 /*
- * bool = avenida.wave(avnraster, amplitude, wavelength)
+ * avenida.wave(avnraster, amplitude, wavelength)
  */
 static int
 avenida_wave(lua_State *L)
@@ -610,8 +710,15 @@ avenida_wave(lua_State *L)
 	wavelength = luaL_checknumber(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_wave(*avn, amplitude, wavelength));
-	return 1;
+	if (amplitude < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", amplitude);
+	if (wavelength < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", wavelength);
+
+	if (!avnraster_wave(*avn, amplitude, wavelength))
+		return luaL_error(L, "%s", __func__);
+
+	return 0;
 }
 
 
