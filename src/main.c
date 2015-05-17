@@ -16,6 +16,8 @@
 #include <lauxlib.h>
 
 #include "avenida.h"
+#include "avnscript-raster.h"
+#include "avnscript-vector.h"
 
 static void usage(void);
 static void version(void);
@@ -59,6 +61,12 @@ main(int argc, char *argv[])
 	}
 
 	luaL_openlibs(L);
+	luaopen_raster(L);
+	lua_pop(L, 1);
+	lua_setglobal(L, "raster");
+	luaopen_vector(L);
+	lua_pop(L, 1);
+	lua_setglobal(L, "vector");
 
 	if (luaL_dofile(L, infile_path)) {
 		warnx("%s", luaL_tolstring(L, -1, NULL));
