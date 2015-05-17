@@ -352,7 +352,7 @@ avenida_motionblur(lua_State *L)
 
 
 /*
- * bool = avenida.negate(avnraster)
+ * avenida.negate(avnraster)
  */
 static int
 avenida_negate(lua_State *L)
@@ -362,8 +362,10 @@ avenida_negate(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_negate(*avn));
-	return 1;
+	if (!avnraster_negate(*avn))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
