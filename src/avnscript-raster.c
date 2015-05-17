@@ -594,7 +594,7 @@ avenida_saturation(lua_State *L)
 
 
 /*
- * bool = avenida.scale(avnraster, factor)
+ * avenida.scale(avnraster, factor)
  */
 static int
 avenida_scale(lua_State *L)
@@ -606,8 +606,13 @@ avenida_scale(lua_State *L)
 	factor = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_scale(*avn, factor));
-	return 1;
+	if (factor <= 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", factor);
+
+	if (!avnraster_scale(*avn, factor))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 

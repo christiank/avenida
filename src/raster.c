@@ -841,9 +841,6 @@ __avnraster_scale(avnraster *avn, const double factor)
 {
 	unsigned long new_w, new_h;
 
-	if (factor < 0.0)
-		return false;
-
 	if (factor == 1.0)
 		return true;
 
