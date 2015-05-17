@@ -110,8 +110,13 @@ avenida_charcoal(lua_State *L)
 	amt = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_charcoal(*avn, amt));
-	return 1;
+	if (amt < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", amt);
+
+	if (!avnraster_charcoal(*avn, amt))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
