@@ -370,7 +370,7 @@ avenida_negate(lua_State *L)
 
 
 /*
- * bool = avenida.negategrays(avnraster)
+ * avenida.negategrays(avnraster)
  */
 static int
 avenida_negategrays(lua_State *L)
@@ -380,8 +380,10 @@ avenida_negategrays(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_negategrays(*avn));
-	return 1;
+	if (!avnraster_negategrays(*avn))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
