@@ -519,7 +519,7 @@ avenida_resize(lua_State *L)
 
 
 /*
- * bool = avenida.roll(avnraster, x_amt, y_amt)
+ * avenida.roll(avnraster, x_amt, y_amt)
  */
 static int
 avenida_roll(lua_State *L)
@@ -532,8 +532,10 @@ avenida_roll(lua_State *L)
 	y_amt = luaL_checkinteger(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_roll(*avn, x_amt, y_amt));
-	return 1;
+	if (!avnraster_roll(*avn, x_amt, y_amt))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
