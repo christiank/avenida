@@ -380,7 +380,8 @@ avenida_open(lua_State *L)
 		luaL_setmetatable(L, "avnraster");
 	} else {
 		avnraster_free(*avn);
-		lua_pushnil(L);
+		luaL_error(L, "couldn't open raster \"%s\"", path);
+		return 0;
 	}
 
 	return 1;
