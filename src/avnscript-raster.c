@@ -657,7 +657,7 @@ avenida_swirl(lua_State *L)
 
 
 /*
- * bool = avenida.tint(avnraster, color, opacity)
+ * avenida.tint(avnraster, color, opacity)
  */
 static int
 avenida_tint(lua_State *L)
@@ -671,8 +671,10 @@ avenida_tint(lua_State *L)
 	opacity = luaL_checknumber(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_tint(*avn, color, opacity));
-	return 1;
+	if (!avnraster_tint(*avn, color, opacity))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
