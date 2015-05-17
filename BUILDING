@@ -1,0 +1,21 @@
+BUILDING AVENIDA
+
+Sun May 17 12:40:17 PDT 2015
+
+==========
+
+Building Avenida is fairly straightforward. First you need to build Lua,
+whose code Avenida ships:
+
+    $ pwd
+    avenida
+    $ cd src/lua/src
+    $ make macosx   # or whatever platform you're running
+
+Then you need to build Avenida itself. Note that Avenida's Makefile requires
+BSD make (aka bmake).
+
+    $ pwd
+    avenida/src/lua/src
+    $ cd ../..
+    $ bmake all
