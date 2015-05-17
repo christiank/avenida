@@ -581,9 +581,6 @@ avnraster_levels(avnraster *avn, const double black, const double white,
 static bool
 __avnraster_motionblur(avnraster *avn, const double amt, const double angle)
 {
-	if (amt < 0.0)
-		return false;
-
 	if (amt == 0.0)
 		return true; /* XXX dunno if this correct */
 

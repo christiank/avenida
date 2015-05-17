@@ -341,8 +341,13 @@ avenida_motionblur(lua_State *L)
 	angle = luaL_checknumber(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_motionblur(*avn, amt, angle));
-	return 1;
+	if (amt < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", amt);
+
+	if (!avnraster_motionblur(*avn, amt, angle))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
