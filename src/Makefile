@@ -42,7 +42,9 @@ OBJS= \
 	media.o \
 	raster.o \
 	script.o \
-	vector.o
+	vector.o \
+	avnscript-raster.o \
+	avnscript-vector.o
 
 OUTBIN= avenida
 LUA_RASTER_MODULE= avnscript-raster.so
