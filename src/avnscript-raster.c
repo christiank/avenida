@@ -192,7 +192,7 @@ avenida_emboss(lua_State *L)
 
 
 /*
- * bool = avenida.equalize(avnraster)
+ * avenida.equalize(avnraster)
  */
 static int
 avenida_equalize(lua_State *L)
@@ -202,8 +202,10 @@ avenida_equalize(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_equalize(*avn));
-	return 1;
+	if (!avnraster_equalize(*avn))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
