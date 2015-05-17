@@ -679,7 +679,7 @@ avenida_tint(lua_State *L)
 
 
 /*
- * bool = avenida.verticalflip(avnraster)
+ * avenida.verticalflip(avnraster)
  */
 static int
 avenida_verticalflip(lua_State *L)
@@ -689,8 +689,10 @@ avenida_verticalflip(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_verticalflip(*avn));
-	return 1;
+	if (!avnraster_verticalflip(*avn))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
