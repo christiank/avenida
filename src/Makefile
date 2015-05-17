@@ -8,10 +8,12 @@
 #CC?= clang -Wall
 CC= clang -Wall
 
-LUA=lua5.2
-LUA_CFLAGS= -I/usr/pkg/include/lua-5.2
-LUA_LDFLAGS= -L/usr/pkg/lib
-LUA_LIBS= -llua5.2 -lm
+LUADIR=./lua
+LUA=lua
+LUA_PLATFORM?=macosx
+LUA_CFLAGS= -I$(LUADIR)/src
+LUA_LDFLAGS= -L$(LUADIR)/src
+LUA_LIBS= -llua -lm
 
 GM_CONFIG= GraphicsMagickWand-config
 GM_CFLAGS= $$($(GM_CONFIG) --cflags) $$($(GM_CONFIG) --cppflags)
