@@ -274,7 +274,10 @@ avenida_horizontalflip(lua_State *L)
 
 
 /*
- * bool = avenida.hue(avnraster, value)
+ * avenida.hue(avnraster, value)
+ *
+ * See the note about MagickModulateImage() in the documentation for
+ * avnraster_brightness().
  */
 static int
 avenida_hue(lua_State *L)
@@ -286,8 +289,13 @@ avenida_hue(lua_State *L)
 	value = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_hue(*avn, value));
-	return 1;
+	if ((value < -100.0) || (value > 100.0))
+		return luaL_error(L, "value %f is outside acceptable range", value);
+
+	if (!avnraster_hue(*avn, value))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
