@@ -256,7 +256,7 @@ avenida_gaussianblur(lua_State *L)
 
 
 /*
- * bool = avenida.horizontalflip(avnraster)
+ * avenida.horizontalflip(avnraster)
  */
 static int
 avenida_horizontalflip(lua_State *L)
@@ -266,8 +266,10 @@ avenida_horizontalflip(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_pushboolean(L, avnraster_horizontalflip(*avn));
-	return 1;
+	if (!avnraster_horizontalflip(*avn))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
