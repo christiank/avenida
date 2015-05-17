@@ -469,9 +469,6 @@ avnraster_equalize(avnraster *avn)
 static bool
 __avnraster_gamma(avnraster *avn, const double gamma)
 {
-	if (gamma < 0.0)
-		return false;
-
 	if (MagickGammaImage(avn->image, gamma) == MagickPass)
 		return true;
 	else

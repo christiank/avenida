@@ -210,7 +210,7 @@ avenida_equalize(lua_State *L)
 
 
 /*
- * bool = avenida.gamma(avnraster, gamma)
+ * avenida.gamma(avnraster, gamma)
  */
 static int
 avenida_gamma(lua_State *L)
@@ -222,8 +222,13 @@ avenida_gamma(lua_State *L)
 	gamma = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_gamma(*avn, gamma));
-	return 1;
+	if (gamma < 0.0)
+		return luaL_error(L, "value %f is outside acceptable range", gamma);
+
+	if (!avnraster_gamma(*avn, gamma))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
