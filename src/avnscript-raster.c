@@ -460,7 +460,7 @@ avenida_open(lua_State *L)
 
 
 /*
- * bool = avenida.radialblur(avnraster, angle)
+ * avenida.radialblur(avnraster, angle)
  */
 static int
 avenida_radialblur(lua_State *L)
@@ -472,8 +472,10 @@ avenida_radialblur(lua_State *L)
 	angle = luaL_checknumber(L, 2);
 	lua_pop(L, 2);
 
-	lua_pushboolean(L, avnraster_radialblur(*avn, angle));
-	return 1;
+	if (!avnraster_radialblur(*avn, angle))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
