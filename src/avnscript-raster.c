@@ -498,7 +498,7 @@ avenida_render(lua_State *L)
 
 
 /*
- * bool = avenida.resize(avnraster, width, height)
+ * avenida.resize(avnraster, width, height)
  */
 static int
 avenida_resize(lua_State *L)
@@ -511,8 +511,10 @@ avenida_resize(lua_State *L)
 	height = (size_t)luaL_checkinteger(L, 3);
 	lua_pop(L, 3);
 
-	lua_pushboolean(L, avnraster_resize(*avn, width, height));
-	return 1;
+	if (!avnraster_resize(*avn, width, height))
+		return luaL_error(L, NULL);
+
+	return 0;
 }
 
 
