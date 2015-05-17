@@ -70,7 +70,7 @@ avenida_border(lua_State *L)
 	lua_pop(L, 4);
 
 	if (!avnraster_border(*avn, width, height, color))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -96,7 +96,7 @@ avenida_brightness(lua_State *L)
 		return luaL_error(L, "value %f is outside acceptable range", value);
 
 	if (!avnraster_brightness(*avn, value))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -116,7 +116,7 @@ avenida_charcoal(lua_State *L)
 		return luaL_error(L, "value %f is outside acceptable range", amt);
 
 	if (!avnraster_charcoal(*avn, amt))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -147,7 +147,7 @@ avenida_crop(lua_State *L)
 			height);
 
 	if (!avnraster_crop(*avn, x, y, width, height))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -165,7 +165,7 @@ avenida_despeckle(lua_State *L)
 	lua_pop(L, 1);
 
 	if (!avnraster_despeckle(*avn))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -185,7 +185,7 @@ avenida_emboss(lua_State *L)
 		return luaL_error(L, "value %f is oustside acceptable range", amt);
 
 	if (!avnraster_emboss(*avn, amt))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -203,7 +203,7 @@ avenida_equalize(lua_State *L)
 	lua_pop(L, 1);
 
 	if (!avnraster_equalize(*avn))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -226,7 +226,7 @@ avenida_gamma(lua_State *L)
 		return luaL_error(L, "value %f is outside acceptable range", gamma);
 
 	if (!avnraster_gamma(*avn, gamma))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -249,7 +249,7 @@ avenida_gaussianblur(lua_State *L)
 		return luaL_error(L, "value %f is outside acceptable range", amt);
 
 	if (avnraster_gaussianblur(*avn, amt))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -267,7 +267,7 @@ avenida_horizontalflip(lua_State *L)
 	lua_pop(L, 1);
 
 	if (!avnraster_horizontalflip(*avn))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -293,7 +293,7 @@ avenida_hue(lua_State *L)
 		return luaL_error(L, "value %f is outside acceptable range", value);
 
 	if (!avnraster_hue(*avn, value))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -345,7 +345,7 @@ avenida_motionblur(lua_State *L)
 		return luaL_error(L, "value %f is outside acceptable range", amt);
 
 	if (!avnraster_motionblur(*avn, amt, angle))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -363,7 +363,7 @@ avenida_negate(lua_State *L)
 	lua_pop(L, 1);
 
 	if (!avnraster_negate(*avn))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -381,7 +381,7 @@ avenida_negategrays(lua_State *L)
 	lua_pop(L, 1);
 
 	if (!avnraster_negategrays(*avn))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -399,7 +399,7 @@ avenida_normalize(lua_State *L)
 	lua_pop(L, 1);
 
 	if (!avnraster_normalize(*avn))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -424,7 +424,7 @@ avenida_oilpaint(lua_State *L)
 		return luaL_error(L, "value %f is outside acceptable range", radius);
 
 	if (!avnraster_oilpaint(*avn, radius))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -473,7 +473,7 @@ avenida_radialblur(lua_State *L)
 	lua_pop(L, 2);
 
 	if (!avnraster_radialblur(*avn, angle))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -512,7 +512,7 @@ avenida_resize(lua_State *L)
 	lua_pop(L, 3);
 
 	if (!avnraster_resize(*avn, width, height))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -533,7 +533,7 @@ avenida_roll(lua_State *L)
 	lua_pop(L, 3);
 
 	if (!avnraster_roll(*avn, x_amt, y_amt))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -561,7 +561,7 @@ avenida_rotate(lua_State *L)
 	}
 
 	if (!avnraster_rotate(*avn, angle, bgcolor))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -587,7 +587,7 @@ avenida_saturation(lua_State *L)
 		return luaL_error(L, "value %f is outside acceptable range", value);
 
 	if (!avnraster_saturation(*avn, value))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -610,7 +610,7 @@ avenida_scale(lua_State *L)
 		return luaL_error(L, "value %f is outside acceptable range", factor);
 
 	if (!avnraster_scale(*avn, factor))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -630,7 +630,7 @@ avenida_sharpen(lua_State *L)
 	lua_pop(L, 2); 
 
 	if (!avnraster_sharpen(*avn, amt))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -650,7 +650,7 @@ avenida_swirl(lua_State *L)
 	lua_pop(L, 2);
 
 	if (!avnraster_swirl(*avn, degrees))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -672,7 +672,7 @@ avenida_tint(lua_State *L)
 	lua_pop(L, 3);
 
 	if (!avnraster_tint(*avn, color, opacity))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -690,7 +690,7 @@ avenida_verticalflip(lua_State *L)
 	lua_pop(L, 1);
 
 	if (!avnraster_verticalflip(*avn))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
@@ -716,7 +716,7 @@ avenida_wave(lua_State *L)
 		return luaL_error(L, "value %f is outside acceptable range", wavelength);
 
 	if (!avnraster_wave(*avn, amplitude, wavelength))
-		return luaL_error(L, NULL);
+		return luaL_error(L, "%s", __func__);
 
 	return 0;
 }
