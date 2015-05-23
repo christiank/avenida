@@ -107,6 +107,7 @@ stravncmdname(const enum avncmdname cmdname)
 	case RASTER_GAUSSIANBLUR: s = "gaussianblur"; break;
 	case RASTER_HORIZONTALFLIP: s = "horizontalflip"; break;
 	case RASTER_HUE: s = "hue"; break;
+	case RASTER_IMPLODE: s = "implode"; break;
 	case RASTER_LEVELS: s = "levels"; break;
 	case RASTER_MOTIONBLUR: s = "motionblur"; break;
 	case RASTER_NEGATE: s = "negate"; break;

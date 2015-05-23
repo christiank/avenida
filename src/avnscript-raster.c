@@ -28,6 +28,7 @@ static int avenida_gamma(lua_State *);
 static int avenida_gaussianblur(lua_State *);
 static int avenida_horizontalflip(lua_State *);
 static int avenida_hue(lua_State *);
+static int avenida_implode(lua_State *);
 static int avenida_info(lua_State *);
 static int avenida_levels(lua_State *);
 static int avenida_motionblur(lua_State *);
@@ -296,6 +297,26 @@ avenida_hue(lua_State *L)
 		return RANGE_ERROR(value);
 
 	if (!avnraster_hue(*avn, value))
+		return DEFAULT_ERROR;
+
+	return 0;
+}
+
+
+/*
+ * raster.implode(img, radius)
+ */
+static int
+avenida_implode(lua_State *L)
+{
+	avnraster **avn;
+	double radius;
+
+	avn = AVNRASTER_ARG1;
+	radius = luaL_checknumber(L, 2);
+	lua_pop(L, 2);
+
+	if (!avnraster_implode(*avn, radius))
 		return DEFAULT_ERROR;
 
 	return 0;
@@ -775,6 +796,7 @@ luaopen_raster(lua_State *L)
 		{"gaussianblur", avenida_gaussianblur},
 		{"horizontalflip", avenida_horizontalflip},
 		{"hue", avenida_hue},
+		{"implode", avenida_implode},
 		{"info", avenida_info},
 		{"levels", avenida_levels},
 		{"motionblur", avenida_motionblur},

@@ -32,6 +32,7 @@ static bool __avnraster_gamma(avnraster *, const double);
 static bool __avnraster_gaussianblur(avnraster*, const double);
 static bool __avnraster_horizontalflip(avnraster *);
 static bool __avnraster_hue(avnraster *, const double);
+static bool __avnraster_implode(avnraster *, const double);
 static bool __avnraster_motionblur(avnraster *avn, const double,
 	const double);
 static bool __avnraster_negate(avnraster *);
@@ -176,6 +177,9 @@ avnraster_render(avnraster *avn, const bool verbose)
 			break;
 		case RASTER_HUE:
 			__avnraster_hue(avn, ARG(0)->arg_double);
+			break;
+		case RASTER_IMPLODE:
+			__avnraster_implode(avn, ARG(0)->arg_double);
 			break;
 		case RASTER_MOTIONBLUR:
 			__avnraster_motionblur(avn, ARG(0)->arg_double, ARG(1)->arg_double);
@@ -562,6 +566,30 @@ avnraster_hue(avnraster *avn, const double value)
 		return false;
 
 	avnop_add_arg(op, AVN_DOUBLE, value);
+	avnraster_add_op(avn, op);
+	return true;
+}
+
+
+static bool
+__avnraster_implode(avnraster *avn, const double radius)
+{
+	if (MagickImplodeImage(avn->image, radius) == MagickPass)
+		return true;
+	else
+		return false;
+}
+
+
+bool
+avnraster_implode(avnraster *avn, const double radius)
+{
+	struct avnop *op;
+
+	if ((op = avnop_new(RASTER_IMPLODE)) == NULL)
+		return false;
+
+	avnop_add_arg(op, AVN_DOUBLE, radius);
 	avnraster_add_op(avn, op);
 	return true;
 }
