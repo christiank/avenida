@@ -83,7 +83,7 @@ cleanup:
 static void
 usage(void)
 {
-	warnx("usage: %s [-h] [-v] script", getprogname());
+	warnx("usage: %s [-h] [-v] [script]", getprogname());
 }
 
 
