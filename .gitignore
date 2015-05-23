@@ -8,3 +8,4 @@ src/lua
 test/
 *.history
 example/
+src/testmain

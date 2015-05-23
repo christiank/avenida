@@ -177,7 +177,7 @@ avncmdnamestr(const char *s)
 	else if (!cmp(s, "setwidth")) return VECTOR_SETWIDTH;
 	else if (!cmp(s, "stroke")) return VECTOR_STROKE;
 	else
-		return -1;
+		return AVNCMD_INVALID;
 }
 #undef cmp
 
@@ -200,6 +200,49 @@ avnop_new(const enum avncmdname name)
 struct avnop *
 avnop_from_json(const char *str)
 {
+	cJSON *obj;
+	cJSON *nameobj, *argsobj;
+	struct avnop *op;
+	enum avncmdname cmdname;
+
+	if ((obj = cJSON_Parse(str)) == NULL) {
+		printf("can't parse\n");
+		return NULL;
+	}
+
+	if ((nameobj = (cJSON_GetObjectItem(obj, "name"))) == NULL) {
+		printf("no name\n");
+		goto fail;
+	}
+	if ((argsobj = (cJSON_GetObjectItem(obj, "args"))) == NULL) {
+		printf("no args\n");
+		goto fail;
+	}
+	if (nameobj->type != cJSON_String) {
+		printf("name is not a str\n");
+		goto fail;
+	}
+	if (argsobj->type != cJSON_Array) {
+		printf("args is not an array\n");
+		goto fail;
+	}
+
+	if ((cmdname = avncmdnamestr(nameobj->valuestring)) == AVNCMD_INVALID) {
+		printf("invalid command name\n");
+		goto fail;
+	}
+
+	if ((op = avnop_new(cmdname)) == NULL) {
+		printf("couldn't create avnop\n");
+		goto fail;
+	}
+
+	cJSON_Delete(obj);
+	return op;
+
+fail:
+	if (obj != NULL)
+		cJSON_Delete(obj);
 	return NULL;
 }
 

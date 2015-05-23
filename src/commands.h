@@ -62,6 +62,8 @@ enum avncmdname {
 
 	/* Video commands */
 	/* ... */
+
+	AVNCMD_INVALID,
 };
 
 enum avncmdargtype {

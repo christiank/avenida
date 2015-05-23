@@ -42,7 +42,6 @@ OBJS= \
 	linenoise.o \
 	status.o \
 	commands.o \
-	main.o \
 	media.o \
 	raster.o \
 	script.o \
@@ -56,14 +55,17 @@ OUTBIN= avenida
 
 all: $(OUTBIN)
 
-$(OUTBIN): $(OBJS)
+$(OUTBIN): $(OBJS) main.o
+	$(CC) -o $(.TARGET) $(.ALLSRC) $(LDFLAGS) $(LIBS)
+
+testmain: $(OBJS) testmain.o
 	$(CC) -o $(.TARGET) $(.ALLSRC) $(LDFLAGS) $(LIBS)
 
 .c.o:
 	$(CC) -c $(CFLAGS) -o $(.TARGET) $(.ALLSRC)
 
 clean:
-	rm -f $(OUTBIN) *.o *.core *.png
+	rm -f $(OUTBIN) testmain *.o *.core *.png
 
 install:
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
