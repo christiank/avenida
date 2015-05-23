@@ -157,7 +157,7 @@ avncmdnamestr(const char *s)
 	else if (!cmp(s, "motionblur")) return RASTER_MOTIONBLUR;
 	else if (!cmp(s, "negate")) return RASTER_NEGATE;
 	else if (!cmp(s, "negategrays")) return RASTER_NEGATEGRAYS;
-	else if (!cmp(s, "normalize")) return RASTER_NORMALIZEj;
+	else if (!cmp(s, "normalize")) return RASTER_NORMALIZE;
 	else if (!cmp(s, "oilpaint")) return RASTER_OILPAINT;
 	else if (!cmp(s, "radialblur")) return RASTER_RADIALBLUR;
 	else if (!cmp(s, "resize")) return RASTER_RESIZE;
