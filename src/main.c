@@ -23,6 +23,7 @@ static void usage(void);
 static void version(void);
 static int repl(void);
 static void repl_completion(const char *buf, linenoiseCompletions *lc);
+static void builtin_help(void);
 static void builtin_quit(void);
 static void builtin_version(void);
 
@@ -112,7 +113,9 @@ repl(void)
 		if (line == NULL)
 			break;
 
-		if (!strcasecmp(line, "/quit")) {
+		if (!strcasecmp(line, "/help")) {
+			builtin_help();
+		} else if (!strcasecmp(line, "/quit")) {
 			builtin_quit();
 			break;
 		} else if (!strcasecmp(line, "/version")) {
@@ -141,8 +144,28 @@ repl(void)
 static void
 repl_completion(const char *buf, linenoiseCompletions *lc)
 {
+	linenoiseAddCompletion(lc, "/help");
 	linenoiseAddCompletion(lc, "/quit");
 	linenoiseAddCompletion(lc, "/version");
+}
+
+
+static void
+builtin_help(void)
+{
+	int i;
+
+	char *cmdnames[] = {
+		"/help", "/quit", "/version", NULL
+	};
+
+	printf("Available commands:\n");
+
+	i = 0;
+	while (cmdnames[i] != NULL) {
+		printf("\t%s\n", cmdnames[i]);
+		i++;
+	}
 }
 
 
