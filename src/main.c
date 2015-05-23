@@ -108,6 +108,9 @@ repl(void)
 	for (;;) {
 		line = linenoise(AVENIDA_PROMPT);
 
+		if (line == NULL)
+			break;
+
 		if (!strcasecmp(line, "/quit")) {
 			builtin_quit();
 			break;
@@ -126,6 +129,7 @@ repl(void)
 			printf("%s\n", lua_tostring(avn->L, i));
 
 		lua_pop(avn->L, top);
+		free(line);
 	}
 
 	avnscript_free(avn);
