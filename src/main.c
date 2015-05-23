@@ -9,13 +9,16 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 #include "avenida.h"
+#include "linenoise.h"
 #include "script.h"
 
 static void usage(void);
 static void version(void);
+static int repl(void);
 
 int
 main(int argc, char *argv[])
@@ -46,8 +49,7 @@ main(int argc, char *argv[])
 	argv += optind;
 
 	if (argc < 1) {
-		usage();
-		return EXIT_FAILURE;
+		return repl();
 	}
 
 	snprintf(infile_path, PATH_MAX, "%s", argv[0]);
@@ -82,4 +84,19 @@ static void
 version(void)
 {
 	printf("%s %s\n", getprogname(), AVENIDA_VERSION);
+}
+
+
+static int
+repl(void)
+{
+	char *line;
+
+	for (;;) {
+		line = linenoise("avenida> ");
+		if (!strcasecmp(line, "quit"))
+			break;
+	}
+
+	return EXIT_SUCCESS;
 }
