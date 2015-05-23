@@ -9,6 +9,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "cJSON.h"
 
@@ -137,6 +138,49 @@ stravncmdname(const enum avncmdname cmdname)
 	return s;
 }
 
+#define cmp strcasecmp
+const enum avncmdname
+avncmdnamestr(const char *s)
+{
+	if (!cmp(s, "border")) return RASTER_BORDER;
+	else if (!cmp(s, "brightness")) return RASTER_BRIGHTNESS;
+	else if (!cmp(s, "charcoal")) return RASTER_CHARCOAL;
+	else if (!cmp(s, "crop")) return RASTER_CROP;
+	else if (!cmp(s, "despeckle")) return RASTER_DESPECKLE;
+	else if (!cmp(s, "emboss")) return RASTER_EMBOSS;
+	else if (!cmp(s, "equalize")) return RASTER_EQUALIZE;
+	else if (!cmp(s, "gamma")) return RASTER_GAMMA;
+	else if (!cmp(s, "gaussianblur")) return RASTER_GAUSSIANBLUR;
+	else if (!cmp(s, "horizontalflip")) return RASTER_HORIZONTALFLIP;
+	else if (!cmp(s, "hue")) return RASTER_HUE;
+	else if (!cmp(s, "levels")) return RASTER_LEVELS;
+	else if (!cmp(s, "motionblur")) return RASTER_MOTIONBLUR;
+	else if (!cmp(s, "negate")) return RASTER_NEGATE;
+	else if (!cmp(s, "negategrays")) return RASTER_NEGATEGRAYS;
+	else if (!cmp(s, "normalize")) return RASTER_NORMALIZEj;
+	else if (!cmp(s, "oilpaint")) return RASTER_OILPAINT;
+	else if (!cmp(s, "radialblur")) return RASTER_RADIALBLUR;
+	else if (!cmp(s, "resize")) return RASTER_RESIZE;
+	else if (!cmp(s, "roll")) return RASTER_ROLL;
+	else if (!cmp(s, "rotate")) return RASTER_ROTATE;
+	else if (!cmp(s, "saturation")) return RASTER_SATURATION;
+	else if (!cmp(s, "scale")) return RASTER_SCALE;
+	else if (!cmp(s, "sharpen")) return RASTER_SHARPEN;
+	else if (!cmp(s, "swirl")) return RASTER_SWIRL;
+	else if (!cmp(s, "tint")) return RASTER_TINT;
+	else if (!cmp(s, "verticalflip")) return RASTER_VERTICALFLIP;
+	else if (!cmp(s, "wave")) return RASTER_WAVE;
+	else if (!cmp(s, "lineto")) return VECTOR_LINETO;
+	else if (!cmp(s, "moveto")) return VECTOR_MOVETO;
+	else if (!cmp(s, "setcap")) return VECTOR_SETCAP;
+	else if (!cmp(s, "setcolor")) return VECTOR_SETCOLOR;
+	else if (!cmp(s, "setwidth")) return VECTOR_SETWIDTH;
+	else if (!cmp(s, "stroke")) return VECTOR_STROKE;
+	else
+		return -1;
+}
+#undef cmp
+
 
 struct avnop *
 avnop_new(const enum avncmdname name)
@@ -150,6 +194,13 @@ avnop_new(const enum avncmdname name)
 	op->nargs = 0;
 
 	return op;
+}
+
+
+struct avnop *
+avnop_from_json(const char *str)
+{
+	return NULL;
 }
 
 

@@ -104,7 +104,9 @@ struct avncmdarg *avncmdarg_new_str(const char *);
 void avncmdarg_free(struct avncmdarg *);
 
 char *stravncmdname(const enum avncmdname cmdname);
+const enum avncmdname avncmdnamestr(const char *s);
 struct avnop *avnop_new(const enum avncmdname);
+struct avnop *avnop_from_json(const char *str);
 void avnop_add_arg(struct avnop *, const enum avncmdargtype, ...);
 void avnop_free(struct avnop *);
 cJSON *avnop_to_json(const struct avnop *);
