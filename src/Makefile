@@ -50,21 +50,10 @@ OBJS= \
 	avnscript-vector.o
 
 OUTBIN= avenida
-LUA_RASTER_MODULE= avnscript-raster.so
-LUA_VECTOR_MODULE= avnscript-vector.so
-LUA_MODULES= $(LUA_RASTER_MODULE) $(LUA_VECTOR_MODULE)
 
 ##########
 
-all: $(OUTBIN) $(LUA_MODULES)
-
-# XXX should be split into two steps, like normal...
-$(LUA_RASTER_MODULE): cJSON.o commands.o raster.o avnscript-raster.c
-	$(CC) $(CFLAGS) -shared -o $(.TARGET) $(.ALLSRC) $(LDFLAGS) $(LIBS)
-
-# XXX should be split into two steps, like normal...
-$(LUA_VECTOR_MODULE): cJSON.o commands.o vector.o avnscript-vector.c
-	$(CC) $(CFLAGS) -shared -o $(.TARGET) $(.ALLSRC) $(LDFLAGS) $(LIBS)
+all: $(OUTBIN)
 
 $(OUTBIN): $(OBJS)
 	$(CC) -o $(.TARGET) $(.ALLSRC) $(LDFLAGS) $(LIBS)
@@ -73,7 +62,7 @@ $(OUTBIN): $(OBJS)
 	$(CC) -c $(CFLAGS) -o $(.TARGET) $(.ALLSRC)
 
 clean:
-	rm -f $(OUTBIN) $(LUA_MODULES) *.o *.so *.core *.png
+	rm -f $(OUTBIN) *.o *.core *.png
 
 install:
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
