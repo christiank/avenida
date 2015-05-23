@@ -105,7 +105,7 @@ repl(void)
 	linenoiseSetCompletionCallback(repl_completion);
 
 	for (;;) {
-		line = linenoise("avenida> ");
+		line = linenoise(AVENIDA_PROMPT);
 
 		if (!strcasecmp(line, "/quit")) {
 			builtin_quit();
