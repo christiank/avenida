@@ -19,6 +19,8 @@
 static void usage(void);
 static void version(void);
 static int repl(void);
+static void builtin_quit(void);
+static void builtin_version(void);
 
 int
 main(int argc, char *argv[])
@@ -94,9 +96,28 @@ repl(void)
 
 	for (;;) {
 		line = linenoise("avenida> ");
-		if (!strcasecmp(line, "quit"))
+
+		if (!strcasecmp(line, "quit")) {
+			builtin_quit();
 			break;
+		} else if (!strcasecmp(line, "version")) {
+			builtin_version();
+		}
 	}
 
 	return EXIT_SUCCESS;
+}
+
+
+static void
+builtin_quit(void)
+{
+	/* NOTHING */
+}
+
+
+static void
+builtin_version(void)
+{
+	version();
 }
