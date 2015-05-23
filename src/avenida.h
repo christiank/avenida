@@ -13,5 +13,6 @@
 
 #define AVENIDA_PROMPT "avenida> "
 #define AVENIDA_HISTORYFILE "avenida.history"
+#define AVENIDA_HISTORYFILE_LEN 64
 
 #endif /* AVENIDA_AVENIDA_H */

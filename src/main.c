@@ -103,6 +103,7 @@ repl(void)
 	avn = avnscript_new("/dev/null");
 	avnscript_setup(avn);
 	linenoiseHistoryLoad(AVENIDA_HISTORYFILE);
+	linenoiseHistorySetMaxLen(AVENIDA_HISTORYFILE_LEN);
 	linenoiseSetCompletionCallback(repl_completion);
 
 	for (;;) {
