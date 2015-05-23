@@ -16,6 +16,11 @@
 - libav, most likely
 
 
+## More help
+
+I'm usually hanging out in #avenida on Freenode.
+
+
 ## License
 
 Avenida is released under a 2-clause BSD-style license. See the LICENSE file
