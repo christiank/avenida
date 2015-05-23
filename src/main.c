@@ -22,6 +22,7 @@
 static void usage(void);
 static void version(void);
 static int repl(void);
+static void repl_completion(const char *buf, linenoiseCompletions *lc);
 static void builtin_quit(void);
 static void builtin_version(void);
 
@@ -101,6 +102,7 @@ repl(void)
 
 	avn = avnscript_new("/dev/null");
 	avnscript_setup(avn);
+	linenoiseSetCompletionCallback(repl_completion);
 
 	for (;;) {
 		line = linenoise("avenida> ");
@@ -124,6 +126,14 @@ repl(void)
 
 	avnscript_free(avn);
 	return EXIT_SUCCESS;
+}
+
+
+static void
+repl_completion(const char *buf, linenoiseCompletions *lc)
+{
+	linenoiseAddCompletion(lc, "/quit");
+	linenoiseAddCompletion(lc, "/version");
 }
 
 
