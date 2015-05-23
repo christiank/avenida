@@ -12,5 +12,6 @@
 #define AVNMEDIA_MAX_OPS 1024
 
 #define AVENIDA_PROMPT "avenida> "
+#define AVENIDA_HISTORYFILE "avenida.history"
 
 #endif /* AVENIDA_AVENIDA_H */

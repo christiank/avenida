@@ -102,6 +102,7 @@ repl(void)
 
 	avn = avnscript_new("/dev/null");
 	avnscript_setup(avn);
+	linenoiseHistoryLoad(AVENIDA_HISTORYFILE);
 	linenoiseSetCompletionCallback(repl_completion);
 
 	for (;;) {
@@ -115,6 +116,9 @@ repl(void)
 		} else {
 			luaL_dostring(avn->L, line);
 		}
+
+		linenoiseHistoryAdd(line);
+		linenoiseHistorySave(AVENIDA_HISTORYFILE);
 
 		top = lua_gettop(avn->L);
 
