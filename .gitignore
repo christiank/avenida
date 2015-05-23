@@ -4,3 +4,7 @@
 *.swo
 *.swp
 src/avenida
+src/lua
+test/
+*.history
+example/
