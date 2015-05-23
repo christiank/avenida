@@ -12,6 +12,9 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "lua.h"
+#include "lauxlib.h"
+
 #include "avenida.h"
 #include "linenoise.h"
 #include "script.h"
@@ -93,18 +96,33 @@ static int
 repl(void)
 {
 	char *line;
+	avnscript *avn;
+	int i, top;
+
+	avn = avnscript_new("/dev/null");
+	avnscript_setup(avn);
 
 	for (;;) {
 		line = linenoise("avenida> ");
 
-		if (!strcasecmp(line, "quit")) {
+		if (!strcasecmp(line, "/quit")) {
 			builtin_quit();
 			break;
-		} else if (!strcasecmp(line, "version")) {
+		} else if (!strcasecmp(line, "/version")) {
 			builtin_version();
+		} else {
+			luaL_dostring(avn->L, line);
 		}
+
+		top = lua_gettop(avn->L);
+
+		for (i = 0; i < top; i++)
+			printf("%s\n", lua_tostring(avn->L, i));
+
+		lua_pop(avn->L, top);
 	}
 
+	avnscript_free(avn);
 	return EXIT_SUCCESS;
 }
 
