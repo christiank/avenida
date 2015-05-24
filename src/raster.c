@@ -39,6 +39,7 @@ static bool __avnraster_negate(avnraster *);
 static bool __avnraster_negategrays(avnraster *);
 static bool __avnraster_normalize(avnraster *);
 static bool __avnraster_oilpaint(avnraster *, const double);
+static bool __avnraster_radialblur(avnraster *, const double);
 static bool __avnraster_resize(avnraster *, const size_t, const size_t);
 static bool __avnraster_roll(avnraster *, const int, const int);
 static bool __avnraster_rotate(avnraster *, const double, const char *);
@@ -195,6 +196,9 @@ avnraster_render(avnraster *avn, const bool verbose)
 			break;
 		case RASTER_OILPAINT:
 			__avnraster_oilpaint(avn, ARG(0)->arg_double);
+			break;
+		case RASTER_RADIALBLUR:
+			__avnraster_radialblur(avn, ARG(0)->arg_double);
 			break;
 		case RASTER_RESIZE:
 			__avnraster_resize(avn, ARG(0)->arg_uint, ARG(1)->arg_uint);
@@ -727,16 +731,27 @@ avnraster_oilpaint(avnraster *avn, const double radius)
 }
 
 
-/*
- * XXX doesn't work??
- */
-bool
-avnraster_radialblur(avnraster *avn, const double angle)
+static bool
+__avnraster_radialblur(avnraster *avn, const double angle)
 {
 	if (MagickRadialBlurImage(avn->image, angle) == MagickPass)
 		return true;
 	else
 		return false;
+}
+
+
+bool
+avnraster_radialblur(avnraster *avn, const double angle)
+{
+	struct avnop *op;
+
+	if ((op = avnop_new(RASTER_RADIALBLUR)) == NULL)
+		return false;
+
+	avnop_add_arg(op, AVN_DOUBLE, angle);
+	avnraster_add_op(avn, op);
+	return true;
 }
 
 
