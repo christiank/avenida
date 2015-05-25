@@ -1,3 +1,10 @@
+/*
+ * vim: noet
+ *
+ * errors.h
+ * Christian Koch <cfkoch@sdf.lonestar.org>
+ */
+
 #ifndef AVENIDA_ERRORS_H
 #define AVENIDA_ERRORS_H
 
