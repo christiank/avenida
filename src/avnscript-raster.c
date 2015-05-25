@@ -10,12 +10,10 @@
 #include <lua.h>
 #include <lauxlib.h>
 
+#include "errors.h"
 #include "raster.h"
 
 #define AVNRASTER_ARG1 ((avnraster**)luaL_checkudata(L, 1, "avnraster"))
-#define DEFAULT_ERROR (luaL_error(L, "%s", __func__))
-#define RANGE_ERROR(value) \
-	(luaL_error(L, "value %f is outside acceptable range", value))
 
 static int avenida_border(lua_State *);
 static int avenida_brightness(lua_State *);
