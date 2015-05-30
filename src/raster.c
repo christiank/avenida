@@ -26,6 +26,7 @@ static bool __avnraster_charcoal(avnraster *, const double );
 static bool __avnraster_crop(avnraster *, const unsigned int,
 	const unsigned int, const size_t, const size_t);
 static bool __avnraster_despeckle(avnraster *);
+static bool __avnraster_edge(avnraster *, const double);
 static bool __avnraster_emboss(avnraster *, const double);
 static bool __avnraster_equalize(avnraster *);
 static bool __avnraster_gamma(avnraster *, const double);
@@ -160,6 +161,9 @@ avnraster_render(avnraster *avn, const bool verbose)
 			break;
 		case RASTER_DESPECKLE:
 			__avnraster_despeckle(avn);
+			break;
+		case RASTER_EDGE:
+			__avnraster_edge(avn, ARG(0)->arg_double);
 			break;
 		case RASTER_EMBOSS:
 			__avnraster_emboss(avn, ARG(0)->arg_double);
@@ -416,6 +420,30 @@ avnraster_despeckle(avnraster *avn)
 	if ((op = avnop_new(RASTER_DESPECKLE)) == NULL)
 		return false;
 
+	avnraster_add_op(avn, op);
+	return true;
+}
+
+
+static bool
+__avnraster_edge(avnraster *avn, const double amt)
+{
+	if (MagickEdgeImage(avn->image, amt) == MagickPass)
+		return true;
+	else
+		return false;
+}
+
+
+bool
+avnraster_edge(avnraster *avn, const double amt)
+{
+	struct avnop *op;
+
+	if  ((op = avnop_new(RASTER_EDGE)) == NULL)
+		return false;
+
+	avnop_add_arg(op, AVN_DOUBLE, amt);
 	avnraster_add_op(avn, op);
 	return true;
 }

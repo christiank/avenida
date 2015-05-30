@@ -20,6 +20,7 @@ static int avenida_brightness(lua_State *);
 static int avenida_charcoal(lua_State *);
 static int avenida_crop(lua_State *);
 static int avenida_despeckle(lua_State *);
+static int avenida_edge(lua_State *);
 static int avenida_emboss(lua_State *);
 static int avenida_equalize(lua_State *);
 static int avenida_gamma(lua_State *);
@@ -167,6 +168,35 @@ avenida_despeckle(lua_State *L)
 	lua_pop(L, 1);
 
 	if (!avnraster_despeckle(*avn))
+		return DEFAULT_ERROR;
+
+	return 0;
+}
+
+
+/*
+ * raster.edge(img, amt?)
+ *
+ * If no 'amt' is given then default to zero, which GraphicsMagick
+ * interprets on its own.
+ */
+static int
+avenida_edge(lua_State *L)
+{
+	avnraster **avn;
+	double amt;
+
+	avn = AVNRASTER_ARG1;
+
+	if (lua_gettop(L) >= 2) {
+		amt = luaL_checknumber(L, 2);
+		lua_pop(L, 2);
+	} else {
+		amt = 0.0;
+		lua_pop(L, 1);
+	}
+
+	if (!avnraster_edge(*avn, amt))
 		return DEFAULT_ERROR;
 
 	return 0;
@@ -791,6 +821,7 @@ luaopen_raster(lua_State *L)
 		{"charcoal", avenida_charcoal},
 		{"crop", avenida_crop},
 		{"despeckle", avenida_despeckle},
+		{"edge", avenida_edge},
 		{"emboss", avenida_emboss},
 		{"equalize", avenida_equalize},
 		{"gamma", avenida_gamma},

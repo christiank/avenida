@@ -101,6 +101,7 @@ stravncmdname(const enum avncmdname cmdname)
 	case RASTER_CHARCOAL: s = "charcoal"; break;
 	case RASTER_CROP: s = "crop"; break;
 	case RASTER_DESPECKLE: s = "despeckle"; break;
+	case RASTER_EDGE: s = "edge"; break;
 	case RASTER_EMBOSS: s = "emboss"; break;
 	case RASTER_EQUALIZE: s = "equalize"; break;
 	case RASTER_GAMMA: s = "gamma"; break;

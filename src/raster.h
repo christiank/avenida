@@ -51,6 +51,7 @@ bool avnraster_charcoal(avnraster *, const double amt);
 bool avnraster_crop(avnraster *, const unsigned int x, const unsigned int y,
 	const size_t width, const size_t height);
 bool avnraster_despeckle(avnraster *);
+bool avnraster_edge(avnraster *, const double amt);
 bool avnraster_emboss(avnraster *, const double amt);
 bool avnraster_equalize(avnraster *);
 bool avnraster_gamma(avnraster *, const double gamma);
