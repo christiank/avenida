@@ -12,6 +12,7 @@
 #include <unistd.h>
 
 #include <dirent.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 
 #include <lua.h>
@@ -21,6 +22,7 @@
 #include "avnscript-util.h"
 
 static int avenida_cd(lua_State *);
+static int avenida_files(lua_State *);
 static int avenida_ls(lua_State *);
 static int avenida_pwd(lua_State *);
 
@@ -34,6 +36,36 @@ avenida_cd(lua_State *L)
 		luaL_error(L, "couldn't change directory");
 
 	return 0;
+}
+
+
+/*
+ * Just like util.ls(), but it only lists regular files.
+ */
+static int
+avenida_files(lua_State *L)
+{
+	DIR *dir;
+	struct dirent *f;
+	struct stat sb;
+	int i = 0;
+
+	lua_newtable(L);
+	dir = opendir(getwd(NULL));
+	rewinddir(dir);
+
+	while ((f = readdir(dir)) != NULL) {
+		stat(f->d_name, &sb);
+		if (S_ISREG(sb.st_mode)) {
+			i++;
+			lua_pushinteger(L, i);
+			lua_pushstring(L, f->d_name);
+			lua_settable(L, -3);
+		}
+	}
+
+	closedir(dir);
+	return 1;
 }
 
 
@@ -81,6 +113,7 @@ luaopen_util(lua_State *L)
 {
 	luaL_Reg funcs[] = {
 		{"cd", avenida_cd},
+		{"files", avenida_files},
 		{"ls", avenida_ls},
 		{"pwd", avenida_pwd},
 		{NULL, NULL}
