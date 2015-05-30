@@ -48,7 +48,8 @@ OBJS= \
 	script.o \
 	vector.o \
 	avnscript-raster.o \
-	avnscript-vector.o
+	avnscript-vector.o \
+	avnscript-util.o
 
 OUTBIN= avenida
 
