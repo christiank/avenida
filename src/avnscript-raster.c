@@ -332,7 +332,7 @@ avenida_info(lua_State *L)
 	avn = AVNRASTER_ARG1;
 	lua_pop(L, 1);
 
-	lua_createtable(L, 0, 4);
+	lua_createtable(L, 0, 5);
 	lua_pushinteger(L, (*avn)->info.width);
 	lua_setfield(L, -2, "width");
 	lua_pushinteger(L, (*avn)->info.height);
@@ -341,6 +341,9 @@ avenida_info(lua_State *L)
 	lua_setfield(L, -2, "codec");
 	lua_pushstring(L, (*avn)->info.path);
 	lua_setfield(L, -2, "path");
+	lua_pushinteger(L, avnraster_info_ncolors(*avn));
+	lua_setfield(L, -2, "ncolors");
+
 	return 1;
 }
 

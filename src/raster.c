@@ -1058,3 +1058,10 @@ pixel_wand_with_color(const char *color)
 	else
 		return wand;
 }
+
+
+unsigned long
+avnraster_info_ncolors(const avnraster *avn)
+{
+	return MagickGetImageColors(avn->image);
+}

@@ -80,4 +80,6 @@ bool avnraster_verticalflip(avnraster *);
 bool avnraster_wave(avnraster *, const double amplitude,
 	const double wavelength);
 
+unsigned long avnraster_info_ncolors(const avnraster *);
+
 #endif /* AVENIDA_RASTER_H */
