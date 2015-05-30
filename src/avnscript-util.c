@@ -12,6 +12,7 @@
 #include <lua.h>
 #include <lauxlib.h>
 
+#include "errors.h"
 #include "avnscript-util.h"
 
 static int avenida_cd(lua_State *);
@@ -35,9 +36,12 @@ avenida_pwd(lua_State *L)
 {
 	char *s;
 
-	s = getwd(NULL);
-	lua_pushstring(L, s);
-	return 1;
+	if ((s = getwd(NULL)) != NULL) {
+		lua_pushstring(L, s);
+		return 1;
+	} else {
+		return DEFAULT_ERROR;
+	}
 }
 
 
