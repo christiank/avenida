@@ -16,6 +16,7 @@
 #include "script.h"
 #include "avnscript-raster.h"
 #include "avnscript-vector.h"
+#include "avnscript-util.h"
 
 avnscript *
 avnscript_new(const char *path)
@@ -60,6 +61,9 @@ avnscript_setup(avnscript *avn)
 	luaopen_vector(avn->L);
 	lua_pop(avn->L, 1);
 	lua_setglobal(avn->L, "vector");
+	luaopen_util(avn->L);
+	lua_pop(avn->L, 1);
+	lua_setglobal(avn->L, "util");
 }
 
 
