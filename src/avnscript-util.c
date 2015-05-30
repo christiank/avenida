@@ -51,8 +51,8 @@ avenida_ls(lua_State *L)
 
 	while ((f = readdir(dir)) != NULL) {
 		i++;
-		lua_pushstring(L, f->d_name);
 		lua_pushinteger(L, i);
+		lua_pushstring(L, f->d_name);
 		lua_settable(L, -3);
 	}
 
