@@ -5,9 +5,14 @@
  * Christian Koch <cfkoch@sdf.lonestar.org>
  */
 
+#include <fcntl.h>
 #include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
+
+#include <dirent.h>
+#include <sys/types.h>
 
 #include <lua.h>
 #include <lauxlib.h>
@@ -16,6 +21,7 @@
 #include "avnscript-util.h"
 
 static int avenida_cd(lua_State *);
+static int avenida_ls(lua_State *);
 static int avenida_pwd(lua_State *);
 
 static int
@@ -28,6 +34,31 @@ avenida_cd(lua_State *L)
 		luaL_error(L, "couldn't change directory");
 
 	return 0;
+}
+
+
+static int
+avenida_ls(lua_State *L)
+{
+	DIR *dir;
+	struct dirent *f;
+	int i = 0;
+
+	lua_newtable(L);
+
+	dir = opendir(getwd(NULL));
+	rewinddir(dir);
+
+	while ((f = readdir(dir)) != NULL) {
+		i++;
+		lua_pushstring(L, f->d_name);
+		lua_pushinteger(L, i);
+		lua_settable(L, -3);
+	}
+
+	closedir(dir);
+
+	return 1;
 }
 
 
@@ -50,6 +81,7 @@ luaopen_util(lua_State *L)
 {
 	luaL_Reg funcs[] = {
 		{"cd", avenida_cd},
+		{"ls", avenida_ls},
 		{"pwd", avenida_pwd},
 		{NULL, NULL}
 	};
