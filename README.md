@@ -18,7 +18,9 @@
 
 ## More help
 
-I'm usually hanging out in #avenida on Freenode.
+I'm usually hanging out in #avenida on Freenode, and on Gitter:
+
+    https://gitter.im/christiank/avenida
 
 
 ## License
