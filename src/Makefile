@@ -6,7 +6,7 @@
 .MAIN: all
 
 #CC?= clang -Wall
-CC= clang -Wall
+CC= clang -Wall -g
 PREFIX=/usr/local
 
 LUADIR=./lua
